@@ -25,7 +25,7 @@ Taken from https://github.com/katzer/cordova-plugin-local-notifications plugin
  * @APPPLANT_LICENSE_HEADER_END@
  */
 
-package com.cowbell.cordova.geofence;
+package com.pgv.cordova.geofence;
 
 import android.content.Context;
 import android.content.res.AssetManager;

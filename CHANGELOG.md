@@ -3,11 +3,11 @@
 ## Version 0.7.0 - 14.05.2017
 
 - Adding/removing geofences now throw errors correctly
-- Error codes [Details](https://github.com/cowbell/cordova-plugin-geofence#error-codes)
-- Fix android 6.0 crashes when user denied location permissions [Details](https://github.com/cowbell/cordova-plugin-geofence/issues/196)
-- Fix notification overrides (android) [Details](https://github.com/cowbell/cordova-plugin-geofence/issues/195)
-- Fix occasional crashes when adding geofences (android) [Details](https://github.com/cowbell/cordova-plugin-geofence/issues/196)
-- Support for NSLocationAlwaysUsageDescription and NSLocationWhenInUseUsageDescription (iOS) [Details](https://github.com/cowbell/cordova
+- Error codes [Details](https://github.com/pgv/cordova-plugin-geofence#error-codes)
+- Fix android 6.0 crashes when user denied location permissions [Details](https://github.com/pgv/cordova-plugin-geofence/issues/196)
+- Fix notification overrides (android) [Details](https://github.com/pgv/cordova-plugin-geofence/issues/195)
+- Fix occasional crashes when adding geofences (android) [Details](https://github.com/pgv/cordova-plugin-geofence/issues/196)
+- Support for NSLocationAlwaysUsageDescription and NSLocationWhenInUseUsageDescription (iOS) [Details](https://github.com/pgv/cordova
 - Support for Swift 2.3, XCode 8.0-8.2
 - Swift support handling delegated to [respective plugin](https://github.com/akofman/cordova-plugin-add-swift-support)-plugin-geofence/pull/194)
 
@@ -23,11 +23,11 @@
 
 - Support for new Google API
 - Support for Xcode 7.0, swift 2.0
-- Android native code broadcast intent. [Details](https://github.com/cowbell/cordova-plugin-geofence#listening-for-geofence-transitions-in-native-code)
+- Android native code broadcast intent. [Details](https://github.com/pgv/cordova-plugin-geofence#listening-for-geofence-transitions-in-native-code)
 - iOS - using SwiftyJson instead of json.swift library
-- Fixing received transition type for transitionType=BOTH. [Details](https://github.com/cowbell/cordova-plugin-geofence/issues/91)
-- Parameters coercion. [Details](https://github.com/cowbell/cordova-plugin-geofence/issues/84)
-- Fixed displaying location permission dialog only when `initialize` function is called. [Details](https://github.com/cowbell/cordova-plugin-geofence/issues/85)
+- Fixing received transition type for transitionType=BOTH. [Details](https://github.com/pgv/cordova-plugin-geofence/issues/91)
+- Parameters coercion. [Details](https://github.com/pgv/cordova-plugin-geofence/issues/84)
+- Fixed displaying location permission dialog only when `initialize` function is called. [Details](https://github.com/pgv/cordova-plugin-geofence/issues/85)
 
 ## Version 0.4.2 - 02.08.2015
 

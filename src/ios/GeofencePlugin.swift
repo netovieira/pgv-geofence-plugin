@@ -398,6 +398,7 @@ class GeoNotificationManager : NSObject, CLLocationManagerDelegate {
             geoNotification["transitionType"].int = transitionType
 
             if geoNotification["notification"].isExists() {
+            // TODO: Call API
                 notifyAbout(geoNotification)
             }
 

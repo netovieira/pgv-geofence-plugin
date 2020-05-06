@@ -3,13 +3,8 @@ var channel = require("cordova/channel");
 
 var isIOS = cordova.platformId === "ios"
 
-function addOrUpdateIOS (geofences, success, error) {
-    var promises = geofences.map(function (geofence) {
-        return execPromise(null, null, "GeofencePlugin", "addOrUpdate", [geofence]);
-    });
-
-    return Promise
-        .all(promises)
+function setUserInfoIOS (userInfo, success, error) {
+    return execPromise(null, null, "GeofencePlugin", "setUserInfo", [userInfo])
         .then(function (results) {
             if (typeof success === "function") {
                 success(results);
@@ -38,95 +33,17 @@ module.exports = {
         return execPromise(success, error, "GeofencePlugin", "initialize", []);
     },
     /**
-     * Adding new geofence to monitor.
-     * Geofence could override the previously one with the same id.
+     * Set UserInfoData geofence plugin
      *
-     * @name addOrUpdate
-     * @param {Geofence|Array} geofences
-     * @param {Function} success callback
-     * @param {Function} error callback
-     *
-     * @return {Promise}
-     */
-    addOrUpdate: function (geofences, success, error) {
-        if (!Array.isArray(geofences)) {
-            geofences = [geofences];
-        }
-
-        geofences.forEach(coerceProperties);
-
-        if (isIOS) {
-            return addOrUpdateIOS(geofences, success, error);
-        }
-
-        return execPromise(success, error, "GeofencePlugin", "addOrUpdate", geofences);
-    },
-    /**
-     * Removing geofences with given ids
-     *
-     * @name  remove
-     * @param  {Number|Array} ids
-     * @param  {Function} success callback
-     * @param  {Function} error callback
-     * @return {Promise}
-     */
-    remove: function (ids, success, error) {
-        if (!Array.isArray(ids)) {
-            ids = [ids];
-        }
-        return execPromise(success, error, "GeofencePlugin", "remove", ids);
-    },
-    /**
-     * removing all stored geofences on the device
-     *
-     * @name  removeAll
-     * @param  {Function} success callback
-     * @param  {Function} error callback
-     * @return {Promise}
-     */
-    removeAll: function (success, error) {
-        return execPromise(success, error, "GeofencePlugin", "removeAll", []);
-    },
-    /**
-     * Getting all watched geofences from the device
-     *
-     * @name  getWatched
-     * @param  {Function} success callback
-     * @param  {Function} error callback
-     * @return {Promise} if successful returns geofences array stringify to JSON
-     */
-    getWatched: function (success, error) {
-        return execPromise(success, error, "GeofencePlugin", "getWatched", []);
-    },
-    /**
-     * Called when app is opened via Notification bar
-     *
-     * @name onNotificationClicked
-     * @param {JSON} notificationData user data from notification
-     */
-    onNotificationClicked: function (notificationData) {},
-    /**
-     * Called when app received geofence transition event
-     * @param  {Array} geofences
-     */
-    onTransitionReceived: function (geofences) {
-        this.receiveTransition(geofences);
-    },
-    /**
-     * Called when app received geofence transition event
-     * @deprecated since version 0.4.0, see onTransitionReceived
-     * @param  {Array} geofences
-     */
-    receiveTransition: function (geofences) {},
-    /**
-     * Simple ping function for testing
+     * @name initialize
      * @param  {Function} success callback
      * @param  {Function} error callback
      *
      * @return {Promise}
      */
-    ping: function (success, error) {
-        return execPromise(success, error, "GeofencePlugin", "ping", []);
+    setUserInfo: function (userInfo, success, error) {
+        if (isIOS) return addOrUpdateIOS(userInfo, success, error);
+        return execPromise(success, error, "GeofencePlugin", "setUserInfo", userInfo);
     }
 };
 

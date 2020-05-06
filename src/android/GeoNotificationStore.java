@@ -1,4 +1,4 @@
-package com.cowbell.cordova.geofence;
+package com.pgv.cordova.geofence;
 
 import android.content.Context;
 

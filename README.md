@@ -10,15 +10,15 @@ Plugin to monitor circular geofences using mobile devices. The purpose is to not
 
 Check out our example applications:
 
-* https://github.com/cowbell/ionic-geofence built with [Ionic](http://ionic.io/) framework
+* https://github.com/pgv/ionic-geofence built with [Ionic](http://ionic.io/) framework
 * https://github.com/tsubik/ionic2-geofence built with [Ionic 2](http://ionic.io/2) framework
-* https://github.com/cowbell/ember-geofence built with [Ember.js](http://emberjs.com/), [Cordova](https://cordova.apache.org/), [Material Design](https://www.google.com/design/spec/material-design/introduction.html)
+* https://github.com/pgv/ember-geofence built with [Ember.js](http://emberjs.com/), [Cordova](https://cordova.apache.org/), [Material Design](https://www.google.com/design/spec/material-design/introduction.html)
 
 ## Installation
 
 From master
 ```
-cordova plugin add https://github.com/cowbell/cordova-plugin-geofence
+cordova plugin add https://github.com/pgv/cordova-plugin-geofence
 ```
 
 Latest stable version
@@ -313,14 +313,14 @@ window.geofence.onTransitionReceived = function (geofences) {
 
 ### Android
 
-For android plugin broadcasting intent `com.cowbell.cordova.geofence.TRANSITION`. You can implement your own `BroadcastReceiver` and start listening for this intent.
+For android plugin broadcasting intent `com.pgv.cordova.geofence.TRANSITION`. You can implement your own `BroadcastReceiver` and start listening for this intent.
 
 Register receiver in `AndroidManifest.xml`
 
 ```xml
 <receiver android:name="YOUR_APP_PACKAGE_NAME.TransitionReceiver">
     <intent-filter>
-        <action android:name="com.cowbell.cordova.geofence.TRANSITION" />
+        <action android:name="com.pgv.cordova.geofence.TRANSITION" />
     </intent-filter>
 </receiver>
 ```
@@ -329,8 +329,8 @@ Example `TransitionReceiver.java` code
 
 ```java
 ......
-import com.cowbell.cordova.geofence.Gson;
-import com.cowbell.cordova.geofence.GeoNotification;
+import com.pgv.cordova.geofence.Gson;
+import com.pgv.cordova.geofence.GeoNotification;
 
 public class TransitionReceiver extends BroadcastReceiver {
 
@@ -388,7 +388,7 @@ window.geofence.addOrUpdate({
 
 ## Installation
 
-- git clone https://github.com/cowbell/cordova-plugin-geofence
+- git clone https://github.com/pgv/cordova-plugin-geofence
 - change into the new directory
 - `npm install`
 
@@ -409,4 +409,4 @@ Add `--verbose` at the end of `cordova-paramedic` command.
 
 This software is released under the [Apache 2.0 License](http://opensource.org/licenses/Apache-2.0).
 
-© 2014-2017 Cowbell-labs. All rights reserved
+© 2014-2017 pgv-labs. All rights reserved

@@ -1,4 +1,4 @@
-package com.cowbell.cordova.geofence;
+package com.pgv.cordova.geofence;
 
 import java.util.LinkedList;
 import java.util.Queue;

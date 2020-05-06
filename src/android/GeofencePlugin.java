@@ -1,4 +1,4 @@
-package com.cowbell.cordova.geofence;
+package com.pgv.cordova.geofence;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,7 +10,6 @@ import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CordovaWebView;
-import org.apache.cordova.PermissionHelper;
 import org.apache.cordova.PluginResult;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,6 +25,8 @@ public class GeofencePlugin extends CordovaPlugin {
     public static final String ERROR_PERMISSION_DENIED = "PERMISSION_DENIED";
     public static final String ERROR_GEOFENCE_NOT_AVAILABLE = "GEOFENCE_NOT_AVAILABLE";
     public static final String ERROR_GEOFENCE_LIMIT_EXCEEDED = "GEOFENCE_LIMIT_EXCEEDED";
+
+    private String uuid;
 
     private GeoNotificationManager geoNotificationManager;
     private Context context;
@@ -69,28 +70,13 @@ public class GeofencePlugin extends CordovaPlugin {
 
         cordova.getThreadPool().execute(new Runnable() {
             public void run() {
-                if (action.equals("addOrUpdate")) {
-                    List<GeoNotification> geoNotifications = new ArrayList<GeoNotification>();
-                    for (int i = 0; i < args.length(); i++) {
-                        GeoNotification not = parseFromJSONObject(args.optJSONObject(i));
-                        if (not != null) {
-                            geoNotifications.add(not);
-                        }
-                    }
-                    geoNotificationManager.addGeoNotifications(geoNotifications, callbackContext);
-                } else if (action.equals("remove")) {
-                    List<String> ids = new ArrayList<String>();
-                    for (int i = 0; i < args.length(); i++) {
-                        ids.add(args.optString(i));
-                    }
-                    geoNotificationManager.removeGeoNotifications(ids, callbackContext);
-                } else if (action.equals("removeAll")) {
-                    geoNotificationManager.removeAllGeoNotifications(callbackContext);
-                } else if (action.equals("getWatched")) {
-                    List<GeoNotification> geoNotifications = geoNotificationManager.getWatched();
-                    callbackContext.success(Gson.get().toJson(geoNotifications));
+                if (action.equals("setUserInfo")) {
+                    PGVApi api = PGVApi.get();
+                    api.setUserInfo(args.optJSONObject(0));
                 } else if (action.equals("initialize")) {
                     initialize(callbackContext);
+                    PGVApi api = PGVApi.get();
+                    api.getCampaignGeofences(1,1,geoNotificationManager, callbackContext);
                 } else if (action.equals("deviceReady")) {
                     deviceReady();
                 }
@@ -102,11 +88,6 @@ public class GeofencePlugin extends CordovaPlugin {
 
     public boolean execute(Action action) throws JSONException {
         return execute(action.action, action.args, action.callbackContext);
-    }
-
-    private GeoNotification parseFromJSONObject(JSONObject object) {
-        GeoNotification geo = GeoNotification.fromJson(object.toString());
-        return geo;
     }
 
     public static void onTransitionReceived(List<GeoNotification> notifications) {
@@ -133,43 +114,45 @@ public class GeofencePlugin extends CordovaPlugin {
     }
 
     private void initialize(CallbackContext callbackContext) {
-        String[] permissions = {
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION
-        };
+//        String[] permissions = {
+//            Manifest.permission.ACCESS_COARSE_LOCATION,
+//            Manifest.permission.ACCESS_FINE_LOCATION,
+//            Manifest.permission.ACCESS_BACKGROUND_LOCATION
+//        };
+//
+//        if (!hasPermissions(permissions)) {
+//            PermissionHelper.requestPermissions(this, 0, permissions);
+//        } else {
 
-        if (!hasPermissions(permissions)) {
-            PermissionHelper.requestPermissions(this, 0, permissions);
-        } else {
             callbackContext.success();
-        }
+//        }
     }
 
     private boolean hasPermissions(String[] permissions) {
-        for (String permission : permissions) {
-            if (!PermissionHelper.hasPermission(this, permission)) return false;
-        }
+//        for (String permission : permissions) {
+//            if (!PermissionHelper.hasPermission(this, permission)) return false;
+//        }
 
         return true;
     }
 
-    public void onRequestPermissionResult(int requestCode, String[] permissions,
-                                          int[] grantResults) throws JSONException {
-        PluginResult result;
-
-        if (executedAction != null) {
-            for (int r:grantResults) {
-                if (r == PackageManager.PERMISSION_DENIED) {
-                    Log.d(TAG, "Permission Denied!");
-                    result = new PluginResult(PluginResult.Status.ILLEGAL_ACCESS_EXCEPTION);
-                    executedAction.callbackContext.sendPluginResult(result);
-                    executedAction = null;
-                    return;
-                }
-            }
-            Log.d(TAG, "Permission Granted!");
-            execute(executedAction);
-            executedAction = null;
-        }
-    }
+//    public void onRequestPermissionResult(int requestCode, String[] permissions,
+//                                          int[] grantResults) throws JSONException {
+//        PluginResult result;
+//
+//        if (executedAction != null) {
+//            for (int r:grantResults) {
+//                if (r == PackageManager.PERMISSION_DENIED) {
+//                    Log.d(TAG, "Permission Denied!");
+//                    result = new PluginResult(PluginResult.Status.ILLEGAL_ACCESS_EXCEPTION);
+//                    executedAction.callbackContext.sendPluginResult(result);
+//                    executedAction = null;
+//                    return;
+//                }
+//            }
+//            Log.d(TAG, "Permission Granted!");
+//            execute(executedAction);
+//            executedAction = null;
+//        }
+//    }
 }
