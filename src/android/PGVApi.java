@@ -24,8 +24,11 @@ public class PGVApi {
 
     private static PGVApi __instance = null;
 
-    public String uuid;
-    public String userInfo;
+    public String       uuid;
+    public JSONObject   userInfo;
+    public float        latitude;
+    public float        longitude;
+    public Boolean      userEmpty;
 
 
     private JSONArray GeofencesList;
@@ -34,6 +37,9 @@ public class PGVApi {
 	 * Constructor.
 	 */
     private PGVApi() {
+        this.userEmpty = true;
+        this.latitude  = 0;
+        this.longitude = 0;
 	    this.uuid = "AAAAAA-RRRRRR-YYYYYYY-OOOOOOO";
 	}
 
@@ -45,8 +51,14 @@ public class PGVApi {
 
         return __instance;
     }
-
     public void getCampaignGeofences(float latitude, float longitude, GeoNotificationManager geoNotificationManager, CallbackContext callbackContext) {
+
+        final GeoNotificationManager gNM = GeoNotificationManager geoNotificationManager;
+
+        final float  lat  = latitude;
+        final float  lng  = longitude;
+        final String uuid = this.uuid;
+
         String url = "https://api.localtarget.com.br/api/get-geolocation-campaigns";
         StringRequest postRequest = new StringRequest(
                 Request.Method.POST,
@@ -68,7 +80,7 @@ public class PGVApi {
                                         geoNotifications.add(not);
                                     }
                                 }
-                                geoNotificationManager.addGeoNotifications(geoNotifications, callbackContext);
+                                gNM.addGeoNotifications(geoNotifications, callbackContext);
                             }catch (JSONException e){
                                 e.printStackTrace();
                             }
@@ -89,8 +101,8 @@ public class PGVApi {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("UUID", uuid);
                 params.put("app_token", "94D118FA41B08F91E734A8E89C89521F");
-                params.put("latitude", Double.toString(latitude));
-                params.put("longitude", Double.toString(longitude));
+                params.put("latitude", Double.toString(lat));
+                params.put("longitude", Double.toString(lng));
 
                 return params;
             }
@@ -102,8 +114,14 @@ public class PGVApi {
         return geo;
     }
 
-    public void setUserInfo(JSONObject userInfo) {
-        this.userInfo = userInfo.toString();
+    public void setUserInfo(String userInfo) {
+        this.userInfo    = new JSONObject(userInfo);
+        this.latitude    = userInfo.getDouble("latitude");
+        this.longitude   = userInfo.getDouble("longitude");
+        this.uuid        = userInfo.getDouble("uuid");
+        this.userEmpty   = false;
+        final String sui = userInfo;
+
         String url = "https://api.localtarget.com.br/api/app-user-data";
         StringRequest postRequest = new StringRequest(
                 Request.Method.POST,
@@ -111,7 +129,6 @@ public class PGVApi {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        //NOTHING HERE
                     }
                 },
                 new Response.ErrorListener() {
@@ -122,9 +139,9 @@ public class PGVApi {
                 }
         ) {
             protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
+                Map<String, String> params = new HashMap<String, String>();
                 params.put("app_token", "94D118FA41B08F91E734A8E89C89521F");
-                params.put("data", userInfo.toString());
+                params.put("data", sui);
 
                 return params;
             }
@@ -132,8 +149,8 @@ public class PGVApi {
     }
 
     public void geofenceTriggered() {
-        String userInfo = this.userInfo;
-        String url = "https://api.localtarget.com.br/api/i-found-one";
+        final String userInfo = this.userInfo.toString();
+        final String url = "https://api.localtarget.com.br/api/i-found-one";
         StringRequest postRequest = new StringRequest(
                 Request.Method.POST,
                 url,
@@ -151,7 +168,7 @@ public class PGVApi {
                 }
         ) {
             protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
+                Map<String, String> params = new HashMap<String, String>();
                 params.put("app_token", "94D118FA41B08F91E734A8E89C89521F");
                 params.put("data", userInfo);
 

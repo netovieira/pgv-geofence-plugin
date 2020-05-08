@@ -1,6 +1,6 @@
 # Cordova Geofence Plugin
 
-[![version](https://badge.fury.io/js/cordova-plugin-geofence.png)](https://badge.fury.io/js/cordova-plugin-geofence)
+[![version](https://badge.fury.io/js/cordova-plugin-pgv-geofence.png)](https://badge.fury.io/js/cordova-plugin-pgv-geofence)
 
 Plugin to monitor circular geofences using mobile devices. The purpose is to notify user if crossing the boundary of the monitored geofence.
 
@@ -18,13 +18,13 @@ Check out our example applications:
 
 From master
 ```
-cordova plugin add https://github.com/pgv/cordova-plugin-geofence
+cordova plugin add https://github.com/pgv/cordova-plugin-pgv-geofence
 ```
 
 Latest stable version
 
 ```
-cordova plugin add cordova-plugin-geofence
+cordova plugin add cordova-plugin-pgv-geofence
 ```
 
 ## Removing the Plugin from project
@@ -32,7 +32,7 @@ cordova plugin add cordova-plugin-geofence
 Using cordova CLI
 
 ```
-cordova plugin rm cordova-plugin-geofence
+cordova plugin rm cordova-plugin-pgv-geofence
 ```
 
 ## Supported Platforms
@@ -92,7 +92,7 @@ Since iOS 10 it's mandatory to add a `NSLocationAlwaysUsageDescription` and `NSL
 When the system prompts the user to allow access, this string is displayed as part of the dialog box. To add this entry you can pass the variable `GEOFENCE_IN_USE_USAGE_DESCRIPTION` and `GEOFENCE_ALWAYS_USAGE_DESCRIPTION` on plugin install.
 
 Example:
-`cordova plugin add cordova-plugin-geofence --variable GEOFENCE_IN_USE_USAGE_DESCRIPTION="your usage message" --variable GEOFENCE_ALWAYS_USAGE_DESCRIPTION="your usage message"`
+`cordova plugin add cordova-plugin-pgv-geofence --variable GEOFENCE_IN_USE_USAGE_DESCRIPTION="your usage message" --variable GEOFENCE_ALWAYS_USAGE_DESCRIPTION="your usage message"`
 
 If you don't pass the variable, the plugin will add a default string as value.
 
@@ -388,7 +388,7 @@ window.geofence.addOrUpdate({
 
 ## Installation
 
-- git clone https://github.com/pgv/cordova-plugin-geofence
+- git clone https://github.com/pgv/cordova-plugin-pgv-geofence
 - change into the new directory
 - `npm install`
 

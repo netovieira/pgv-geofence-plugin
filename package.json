@@ -1,18 +1,17 @@
 {
-  "name": "cordova-plugin-geofence",
+  "name": "cordova-plugin-pgv-geofence",
   "version": "0.1.0",
   "description": "Cordova geofence plugin",
   "cordova": {
-    "id": "cordova-plugin-geofence",
+    "id": "cordova-plugin-pgv-geofence",
     "platforms": [
-      "android",
-      "ios"
+      "android"
     ]
   },
   "scripts": {},
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/netovieira/pgv-cordova-plugin-geofence.git"
+    "url": "git+https://github.com/netovieira/pgv-cordova-plugin-pgv-geofence.git"
   },
   "keywords": [
     "pgv",
@@ -25,16 +24,16 @@
   "author": "PGV Tecnologia",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/netovieira/pgv-cordova-plugin-geofence/issues"
+    "url": "https://github.com/netovieira/pgv-cordova-plugin-pgv-geofence/issues"
   },
-  "homepage": "https://github.com/netovieira/pgv-cordova-plugin-geofence#readme",
+  "homepage": "https://github.com/netovieira/pgv-cordova-plugin-pgv-geofence#readme",
   "engines": [
     {
       "name": "cordova",
       "version": ">=5.0.0"
     }
   ],
-  "typings": "./typings/cordova-plugin-geofence.d.ts",
+  "typings": "./typings/cordova-plugin-pgv-geofence.d.ts",
   "devDependencies": {
     "cordova": "^6.1.1",
     "cordova-paramedic": "https://github.com/apache/cordova-paramedic"
