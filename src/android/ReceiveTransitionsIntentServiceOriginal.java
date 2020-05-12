@@ -12,30 +12,12 @@ import com.google.android.gms.location.GeofencingEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-//CUSTOM
-import android.telephony.TelephonyManager;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import android.location.Location;
-
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.android.volley.toolbox.JsonObjectRequest;
-
 public class ReceiveTransitionsIntentService extends IntentService {
     protected static final String GeofenceTransitionIntent = "com.pgv.cordova.geofence.TRANSITION";
     protected BeepHelper beepHelper;
-//    protected GeoNotificationNotifier notifier;
+    protected GeoNotificationNotifier notifier;
     protected GeoNotificationStore store;
 
-    TelephonyManager telephonyManager;
     /**
      * Sets an identifier for the service
      */
@@ -59,10 +41,10 @@ public class ReceiveTransitionsIntentService extends IntentService {
         Logger logger = Logger.getLogger();
         logger.log(Log.DEBUG, "ReceiveTransitionsIntentService - onHandleIntent");
         Intent broadcastIntent = new Intent(GeofenceTransitionIntent);
-//        notifier = new GeoNotificationNotifier(
-//                (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE),
-//                this
-//        );
+        notifier = new GeoNotificationNotifier(
+            (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE),
+            this
+        );
 
         // TODO: refactor this, too long
         // First check for errors
@@ -89,36 +71,7 @@ public class ReceiveTransitionsIntentService extends IntentService {
 
                     if (geoNotification != null) {
                         if (geoNotification.notification != null) {
-//                            notifier.notify(geoNotification.notification);
-
-                            String url = "https://api.localtarget.com.br/api/i-found-one";
-
-                            Location location = geofencingEvent.getTriggeringLocation();
-                            double latitude = location.getLatitude();
-                            double longitude = location.getLongitude();
-
-                            RequestQueue requstQueue = Volley.newRequestQueue(getApplicationContext());
-                            try {
-                                JSONObject obj = new JSONObject(geoNotification.notification.getDataJson());
-                                obj.put("latitude",  latitude);
-                                obj.put("longitude", longitude);
-
-                                JsonObjectRequest jsonObj = new JsonObjectRequest(Request.Method.POST, url, obj,
-                                        new Response.Listener<JSONObject>() {
-                                            @Override
-                                            public void onResponse(JSONObject response) {
-                                                //SUCCESS
-                                            }
-                                        }, new Response.ErrorListener() {
-                                    @Override
-                                    public void onErrorResponse(VolleyError error) {
-                                        //ERROR
-                                    }
-                                });
-                                requstQueue.add(jsonObj);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
+                            notifier.notify(geoNotification.notification);
                         }
                         geoNotification.transitionType = transitionType;
                         geoNotifications.add(geoNotification);

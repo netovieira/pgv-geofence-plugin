@@ -10,6 +10,7 @@ import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CordovaWebView;
+import org.apache.cordova.PermissionHelper;
 import org.apache.cordova.PluginResult;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,17 +19,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-//CUSTOM
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.android.volley.toolbox.JsonObjectRequest;
-
 public class GeofencePlugin extends CordovaPlugin {
-    public static final String TAG = "PGVGeofencePlugin";
+    public static final String TAG = "GeofencePlugin";
 
     public static final String ERROR_UNKNOWN = "UNKNOWN";
     public static final String ERROR_PERMISSION_DENIED = "PERMISSION_DENIED";
@@ -120,7 +112,7 @@ public class GeofencePlugin extends CordovaPlugin {
     public static void onTransitionReceived(List<GeoNotification> notifications) {
         Log.d(TAG, "Transition Event Received!");
         String js = "setTimeout('geofence.onTransitionReceived("
-                + Gson.get().toJson(notifications) + ")',0)";
+            + Gson.get().toJson(notifications) + ")',0)";
         if (webView == null) {
             Log.d(TAG, "Webview is null");
         } else {
@@ -141,15 +133,43 @@ public class GeofencePlugin extends CordovaPlugin {
     }
 
     private void initialize(CallbackContext callbackContext) {
-        callbackContext.success();
+        String[] permissions = {
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        };
+
+        if (!hasPermissions(permissions)) {
+            PermissionHelper.requestPermissions(this, 0, permissions);
+        } else {
+            callbackContext.success();
+        }
     }
 
     private boolean hasPermissions(String[] permissions) {
+        for (String permission : permissions) {
+            if (!PermissionHelper.hasPermission(this, permission)) return false;
+        }
+
         return true;
     }
 
     public void onRequestPermissionResult(int requestCode, String[] permissions,
                                           int[] grantResults) throws JSONException {
-    }
+        PluginResult result;
 
+        if (executedAction != null) {
+            for (int r:grantResults) {
+                if (r == PackageManager.PERMISSION_DENIED) {
+                    Log.d(TAG, "Permission Denied!");
+                    result = new PluginResult(PluginResult.Status.ILLEGAL_ACCESS_EXCEPTION);
+                    executedAction.callbackContext.sendPluginResult(result);
+                    executedAction = null;
+                    return;
+                }
+            }
+            Log.d(TAG, "Permission Granted!");
+            execute(executedAction);
+            executedAction = null;
+        }
+    }
 }
