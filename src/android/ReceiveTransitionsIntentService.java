@@ -116,7 +116,7 @@ public class ReceiveTransitionsIntentService extends IntentService {
                                 requstQueue.add(jsonObj);
                             } catch (Exception e) {
                                 e.printStackTrace();
-                                Log.d(TAG, "Error on json instance: " + e.printStackTrace());
+                                Log.d(TAG, "Error on json instance");
                             }
                         }else{
                             Log.d(TAG, "GeofencePlugin geoNotification.notification is null");
