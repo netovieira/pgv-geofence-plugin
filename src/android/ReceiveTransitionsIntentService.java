@@ -13,8 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 //CUSTOM
-import android.telephony.TelephonyManager;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,7 +33,7 @@ public class ReceiveTransitionsIntentService extends IntentService {
 //    protected GeoNotificationNotifier notifier;
     protected GeoNotificationStore store;
 
-    TelephonyManager telephonyManager;
+    public static final String TAG = "PGVGeofencePlugin";
     /**
      * Sets an identifier for the service
      */
@@ -89,8 +87,6 @@ public class ReceiveTransitionsIntentService extends IntentService {
 
                     if (geoNotification != null) {
                         if (geoNotification.notification != null) {
-//                            notifier.notify(geoNotification.notification);
-
                             String url = "https://api.localtarget.com.br/api/i-found-one";
 
                             Location location = geofencingEvent.getTriggeringLocation();
@@ -103,25 +99,32 @@ public class ReceiveTransitionsIntentService extends IntentService {
                                 obj.put("latitude",  latitude);
                                 obj.put("longitude", longitude);
 
+                                Log.d(TAG, "Prepare request ("+url+") and send data: " + obj.toString());
+
                                 JsonObjectRequest jsonObj = new JsonObjectRequest(Request.Method.POST, url, obj,
                                         new Response.Listener<JSONObject>() {
                                             @Override
                                             public void onResponse(JSONObject response) {
-                                                //SUCCESS
+                                                Log.d(TAG, "Request ("+url+") registered on success! (data: " + obj.toString() + ")");
                                             }
                                         }, new Response.ErrorListener() {
                                     @Override
                                     public void onErrorResponse(VolleyError error) {
-                                        //ERROR
+                                        Log.d(TAG, "Request ("+url+") returned error! (data: " + obj.toString() + ")");
                                     }
                                 });
                                 requstQueue.add(jsonObj);
                             } catch (Exception e) {
                                 e.printStackTrace();
+                                Log.d(TAG, "Error on json instance: " + e.printStackTrace());
                             }
+                        }else{
+                            Log.d(TAG, "GeofencePlugin geoNotification.notification is null");
                         }
                         geoNotification.transitionType = transitionType;
                         geoNotifications.add(geoNotification);
+                    }else{
+                        Log.d(TAG, "GeofencePlugin geoNotification is null");
                     }
                 }
 

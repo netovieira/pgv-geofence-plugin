@@ -1,9 +1,9 @@
 {
-  "name": "cordova-plugin-pgv-geofence",
-  "version": "0.1.0",
-  "description": "Cordova geofence plugin",
+  "name": "@netovieira/pgv-geofence-plugin",
+  "version": "1.0.0",
+  "description": "PGV Cordova geofence plugin",
   "cordova": {
-    "id": "cordova-plugin-pgv-geofence",
+    "id": "pgv-geofence-plugin",
     "platforms": [
       "android"
     ]
@@ -37,5 +37,6 @@
   "devDependencies": {
     "cordova": "^6.1.1",
     "cordova-paramedic": "https://github.com/apache/cordova-paramedic"
-  }
+  },
+  "publishConfig": { "registry": "https://npm.pkg.github.com/netovieira" }
 }
