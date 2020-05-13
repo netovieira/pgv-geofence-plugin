@@ -1,6 +1,6 @@
 {
   "name": "@netovieira/pgv-geofence-plugin",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "PGV Cordova geofence plugin",
   "cordova": {
     "id": "pgv-geofence-plugin",
