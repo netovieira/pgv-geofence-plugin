@@ -87,7 +87,7 @@ public class ReceiveTransitionsIntentService extends IntentService {
 
                     if (geoNotification != null) {
                         if (geoNotification.notification != null) {
-                            String url = "https://api.localtarget.com.br/api/i-found-one";
+                            final String url = "https://api.localtarget.com.br/api/i-found-one";
 
                             Location location = geofencingEvent.getTriggeringLocation();
                             double latitude = location.getLatitude();
@@ -99,18 +99,20 @@ public class ReceiveTransitionsIntentService extends IntentService {
                                 obj.put("latitude",  latitude);
                                 obj.put("longitude", longitude);
 
-                                Log.d(TAG, "Prepare request ("+url+") and send data: " + obj.toString());
+                                final JSONObject fobj = obj;
+
+                                Log.d(TAG, "Prepare request ("+url+") and send data: " + fobj.toString());
 
                                 JsonObjectRequest jsonObj = new JsonObjectRequest(Request.Method.POST, url, obj,
                                         new Response.Listener<JSONObject>() {
                                             @Override
                                             public void onResponse(JSONObject response) {
-                                                Log.d(TAG, "Request ("+url+") registered on success! (data: " + obj.toString() + ")");
+                                                Log.d(TAG, "Request ("+url+") registered on success! (data: " + fobj.toString() + ")");
                                             }
                                         }, new Response.ErrorListener() {
                                     @Override
                                     public void onErrorResponse(VolleyError error) {
-                                        Log.d(TAG, "Request ("+url+") returned error! (data: " + obj.toString() + ")");
+                                        Log.d(TAG, "Request ("+url+") returned error! (data: " + fobj.toString() + ")");
                                     }
                                 });
                                 requstQueue.add(jsonObj);
