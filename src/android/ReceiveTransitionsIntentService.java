@@ -94,6 +94,7 @@ public class ReceiveTransitionsIntentService extends IntentService {
                         if (geoNotification != null) {
                             geoNotification.transitionType = transitionType;
                             JSONObject obj = new JSONObject(geoNotification.notification.getDataJson());
+                            Location location = geofencingEvent.getTriggeringLocation();
                             obj.put("latitude",  location.getLatitude());
                             obj.put("longitude", location.getLongitude());
                             Log.d(TAG, "******** Notification DATA: " + obj.toString());
