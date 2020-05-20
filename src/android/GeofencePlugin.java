@@ -159,7 +159,7 @@ public class GeofencePlugin extends CordovaPlugin {
         }
 
         String js = "setTimeout('geofence.onTransitionReceived("
-                + Gson.get().toJson(notifications) + ")',0)";
+                + Gson.get().toJson(geoNotifications) + ")',0)";
         if (webView == null) {
             Log.d(TAG, "Webview is null");
         } else {
