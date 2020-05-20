@@ -100,7 +100,8 @@ public class ReceiveTransitionsIntentService extends IntentService {
                                 double latitude = location.getLatitude();
                                 double longitude = location.getLongitude();
 
-                                RequestQueue requstQueue = Volley.newRequestQueue(getApplicationContext());
+                                RequestQueue requstQueue = Volley.newRequestQueue(this);
+//                                RequestQueue requstQueue = Volley.newRequestQueue(getApplicationContext());
                                 try {
                                     JSONObject obj = new JSONObject(geoNotification.notification.getDataJson());
                                     obj.put("latitude",  latitude);
