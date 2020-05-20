@@ -93,17 +93,21 @@ public class ReceiveTransitionsIntentService extends IntentService {
 
                         if (geoNotification != null) {
                             geoNotification.transitionType = transitionType;
-                            broadcastIntent.putExtra("transitionData", Gson.get().toJson(geoNotifications));
-                            Location location = geofencingEvent.getTriggeringLocation();
-                            double latitude = location.getLatitude();
-                            double longitude = location.getLongitude();
 
-                            Log.d(TAG, "******** GeofencePlugin onTransitionReceived called");
-                            GeofencePlugin.onTransitionReceived(getApplicationContext(), geoNotifications, latitude, longitude);
-//                            GeofencePlugin.onTransitionReceived(this, geoNotifications, latitude, longitude);
+                            Location location = geofencingEvent.getTriggeringLocation();
+                            geoNotification.latitude = location.getLatitude();
+                            geoNotification.longitude = location.getLongitude();
+                            Log.d(TAG, "******** Notification DATA: " + Gson.get().toJson(geoNotification));
                         }else{
                             Log.d(TAG, "******** GeofencePlugin geoNotification is null");
                         }
+                    }
+
+                    if (geoNotifications.size() > 0) {
+                        Log.d(TAG, "******** GeofencePlugin onTransitionReceived called");
+                        broadcastIntent.putExtra("transitionData", Gson.get().toJson(geoNotifications));
+                        GeofencePlugin.onTransitionReceived(getApplicationContext(), geoNotifications, latitude, longitude);
+//                            GeofencePlugin.onTransitionReceived(this, geoNotifications, latitude, longitude);
                     }
                 } else {
                     String error = "Geofence transition error: " + transitionType;

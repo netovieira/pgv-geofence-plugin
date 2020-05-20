@@ -6,8 +6,6 @@ import android.content.pm.PackageManager;
 import android.util.Log;
 import android.Manifest;
 
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import android.content.BroadcastReceiver;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
@@ -42,15 +40,6 @@ public class GeofencePlugin extends CordovaPlugin {
 
     private Context context;
     public static CordovaWebView webView = null;
-
-
-
-    protected BroadcastReceiver mReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Log.d(TAG, ">>>>>>> BroadcastReceiver Event Received!");
-        }
-    };
 
     private class Action {
         public String action;
@@ -132,59 +121,60 @@ public class GeofencePlugin extends CordovaPlugin {
 
     /*Context context, */
     public static void onTransitionReceived(Context context, List<GeoNotification> geoNotifications, double latitude, double longitude) {
-        Log.d(TAG, ">>>>>>> Transition Event Received!");
-//
-//        final String url = "https://api.localtarget.com.br/api/i-found-one";
-//
-//        RequestQueue requstQueue = Volley.newRequestQueue(context);
-////                                RequestQueue requstQueue = Volley.newRequestQueue(getApplicationContext());
-//
-//        for (GeoNotification geoNotification : geoNotifications) {
-//            try {
-//                JSONObject obj = new JSONObject(geoNotification.notification.getDataJson());
-//                obj.put("latitude",  latitude);
-//                obj.put("longitude", longitude);
-//
-//                final JSONObject fobj = obj;
-//
-//                Log.d(TAG, "Prepare request ("+url+") and send data");
-//                Log.d(TAG, fobj.toString());
-//
-//                JsonObjectRequest jsonObj = new JsonObjectRequest(Request.Method.POST, url, obj,
-//                        new Response.Listener<JSONObject>() {
-//                            @Override
-//                            public void onResponse(JSONObject response) {
-//                                Log.d(TAG, "******** SUCCESS! Request ("+url+") registered on success!");
-//                                Log.d(TAG, "******** SUCCESS! Data: " + fobj.toString());
-//                                Log.d(TAG, "******** SUCCESS! Response: "+response.toString());
-//                            }
-//                        }, new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        Log.d(TAG, "******** ERROR! Request ("+url+") returned error!");
-//                        Log.d(TAG, "******** ERROR! Data: " + fobj.toString());
-//                        Log.d(TAG, "******** ERROR! Error: " + error..getMessage());
-//                    }
-//                });
-//                Log.d(TAG, "Request added on requstQueue");
-//                requstQueue.add(jsonObj);
-//            } catch (Exception e) {
-//                Log.d(TAG, "******** Error on json instance");
-//            }
-//        }
-//
-//        String js = "setTimeout('geofence.onTransitionReceived("
-//                + Gson.get().toJson(geoNotifications) + ")',0)";
-//        if (webView == null) {
-//            Log.d(TAG, "Webview is null");
-//        } else {
-//            webView.sendJavascript(js);
-//        }
+        Log.d(TAG, "Transition Event Received!");
+
+        final String url = "https://api.localtarget.com.br/api/i-found-one";
+
+        RequestQueue requstQueue = Volley.newRequestQueue(context);
+//                                RequestQueue requstQueue = Volley.newRequestQueue(getApplicationContext());
+
+        for (GeoNotification geoNotification : geoNotifications) {
+            try {
+                JSONObject obj = new JSONObject(geoNotification.notification.getDataJson());
+                obj.put("latitude",  latitude);
+                obj.put("longitude", longitude);
+
+                final JSONObject fobj = obj;
+
+                Log.d(TAG, "Prepare request ("+url+") and send data");
+                Log.d(TAG, fobj.toString());
+
+                JsonObjectRequest jsonObj = new JsonObjectRequest(Request.Method.POST, url, obj,
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                Log.d(TAG, "******** SUCCESS! Request ("+url+") registered on success!");
+                                Log.d(TAG, "******** SUCCESS! Data: " + fobj.toString());
+                                Log.d(TAG, "******** SUCCESS! Response: "+response.toString());
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d(TAG, "******** ERROR! Request ("+url+") returned error!");
+                        Log.d(TAG, "******** ERROR! Data: " + fobj.toString());
+                        Log.d(TAG, "******** ERROR! Error: " + error..getMessage());
+                    }
+                });
+                Log.d(TAG, "Request added on requstQueue");
+                requstQueue.add(jsonObj);
+            } catch (Exception e) {
+                Log.d(TAG, "******** Error on json instance");
+            }
+        }
+
+        String js = "setTimeout('geofence.onTransitionReceived("
+                + Gson.get().toJson(geoNotifications) + ")',0)";
+        if (webView == null) {
+            Log.d(TAG, "Webview is null");
+        } else {
+            webView.sendJavascript(js);
+        }
     }
 
     private void deviceReady() {
         Intent intent = cordova.getActivity().getIntent();
         String data = intent.getStringExtra("geofence.notification.data");
+        LocalBroadcastManager.getInstance(this).registerReceiver(mReceiver, new IntentFilter(ReceiveTransitionsIntentService.SERVICE_MESSAGE));
     }
 
     private void initialize(CallbackContext callbackContext) {
@@ -198,19 +188,5 @@ public class GeofencePlugin extends CordovaPlugin {
     public void onRequestPermissionResult(int requestCode, String[] permissions,
                                           int[] grantResults) throws JSONException {
     }
-
-    @Override
-    protected void onStart(){
-        super.onStart();
-
-        LocalBroadcastManager.getInstance(this).registerReceiver(mReceiver, new IntentFilter(MyIntentService.SERVICE_MSG));
-    };
-
-    @Override
-    protected void onStop(){
-        super.onStop();
-
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mReceiver);
-    };
 
 }
