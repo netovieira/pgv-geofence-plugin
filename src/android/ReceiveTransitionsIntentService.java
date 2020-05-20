@@ -30,7 +30,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 public class ReceiveTransitionsIntentService extends IntentService {
     protected static final String GeofenceTransitionIntent = "com.pgv.cordova.geofence.TRANSITION";
     protected BeepHelper beepHelper;
-//    protected GeoNotificationNotifier notifier;
+    protected GeoNotificationNotifier notifier;
     protected GeoNotificationStore store;
 
     public static final String TAG = "PGVGeofencePlugin";
@@ -42,6 +42,10 @@ public class ReceiveTransitionsIntentService extends IntentService {
         beepHelper = new BeepHelper();
         store = new GeoNotificationStore(this);
         Logger.setLogger(new Logger(GeofencePlugin.TAG, this, false));
+        notifier = new GeoNotificationNotifier(
+                (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE),
+                this
+        );
     }
 
     /**
@@ -87,6 +91,8 @@ public class ReceiveTransitionsIntentService extends IntentService {
 
                     if (geoNotification != null) {
                         if (geoNotification.notification != null) {
+                            notifier.notify(geoNotification.notification);
+
                             final String url = "https://api.localtarget.com.br/api/i-found-one";
 
                             Location location = geofencingEvent.getTriggeringLocation();
