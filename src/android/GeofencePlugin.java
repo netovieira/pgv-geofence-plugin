@@ -134,8 +134,8 @@ public class GeofencePlugin extends CordovaPlugin {
 
         for (GeoNotification geoNotification : geoNotifications) {
             Log.d(TAG, "******** BEFORE Request on "+url+"!");
-            Log.d(TAG, "******** BEFORE Data: " + geoNotification.notification.getDataJson());
-            GeofencePlugin.sendPost(url, geoNotification.notification.getDataJson());
+            Log.d(TAG, "******** BEFORE Data: " + Gson.get().toJson(geoNotification));
+            GeofencePlugin.sendPost(url, Gson.get().toJson(geoNotification));
 //            try {
 //                JSONObject obj = new JSONObject(geoNotification.notification.getDataJson());
 //                obj.put("latitude",  geoNotification.latitude);
