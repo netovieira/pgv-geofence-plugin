@@ -104,7 +104,7 @@ public class ReceiveTransitionsIntentService extends IntentService {
                         }
                     }
 
-//                    if (geoNotifications.size() > 0) {
+                    if (geoNotifications.size() > 0) {
                         Log.d(TAG, "******** GeofencePlugin onTransitionReceived called");
                         broadcastIntent.putExtra("transitionData", Gson.get().toJson(geoNotifications));
                         GeofencePlugin.onTransitionReceived(getApplicationContext(), geoNotifications);
