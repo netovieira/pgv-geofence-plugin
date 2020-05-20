@@ -34,6 +34,7 @@ public class ReceiveTransitionsIntentService extends IntentService {
     protected GeoNotificationStore store;
 
     public static final String TAG = "PGVGeofencePlugin";
+    public static final String SERVICE_MESSAGE = "PGVGeofencePluginService";
     /**
      * Sets an identifier for the service
      */
@@ -97,6 +98,7 @@ public class ReceiveTransitionsIntentService extends IntentService {
                             double latitude = location.getLatitude();
                             double longitude = location.getLongitude();
 
+                            Log.d(TAG, "******** GeofencePlugin onTransitionReceived called");
                             GeofencePlugin.onTransitionReceived(getApplicationContext(), geoNotifications, latitude, longitude);
 //                            GeofencePlugin.onTransitionReceived(this, geoNotifications, latitude, longitude);
                         }else{
