@@ -94,9 +94,9 @@ public class ReceiveTransitionsIntentService extends IntentService {
                         if (geoNotification != null) {
                             geoNotification.transitionType = transitionType;
                             JSONObject obj = new JSONObject(geoNotification.notification.getDataJson());
-                            obj.put("latitude",  location.getLatitude();
-                            obj.put("longitude", location.getLongitude();
-                            Log.d(TAG, "******** Notification DATA: " + obj.toString()));
+                            obj.put("latitude",  location.getLatitude());
+                            obj.put("longitude", location.getLongitude());
+                            Log.d(TAG, "******** Notification DATA: " + obj.toString());
                             geoNotifications.add(obj);
                         }else{
                             Log.d(TAG, "******** GeofencePlugin geoNotification is null");
