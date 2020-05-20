@@ -36,7 +36,8 @@ public class GeofencePlugin extends CordovaPlugin {
     public static final String ERROR_GEOFENCE_LIMIT_EXCEEDED = "GEOFENCE_LIMIT_EXCEEDED";
 
     private GeoNotificationManager geoNotificationManager;
-    private Context context;
+//    private Context context;
+    private static Context context;
     public static CordovaWebView webView = null;
 
     private class Action {
@@ -117,12 +118,13 @@ public class GeofencePlugin extends CordovaPlugin {
         return geo;
     }
 
+    /*Context context, */
     public static void onTransitionReceived(List<GeoNotification> geoNotifications, double latitude, double longitude) {
         Log.d(TAG, "Transition Event Received!");
 
         final String url = "https://api.localtarget.com.br/api/i-found-one";
 
-        RequestQueue requstQueue = Volley.newRequestQueue(getApplicationContext());
+        RequestQueue requstQueue = Volley.newRequestQueue(context);
 //                                RequestQueue requstQueue = Volley.newRequestQueue(getApplicationContext());
 
         for (GeoNotification geoNotification : geoNotifications) {

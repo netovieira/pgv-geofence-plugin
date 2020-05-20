@@ -98,6 +98,7 @@ public class ReceiveTransitionsIntentService extends IntentService {
                             double longitude = location.getLongitude();
 
                             GeofencePlugin.onTransitionReceived(geoNotifications, latitude, longitude);
+//                            GeofencePlugin.onTransitionReceived(this, geoNotifications, latitude, longitude);
                         }else{
                             Log.d(TAG, "******** GeofencePlugin geoNotification is null");
                         }
