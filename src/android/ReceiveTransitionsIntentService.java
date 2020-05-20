@@ -66,87 +66,94 @@ public class ReceiveTransitionsIntentService extends IntentService {
 //                this
 //        );
 
-        // TODO: refactor this, too long
-        // First check for errors
-        GeofencingEvent geofencingEvent = GeofencingEvent.fromIntent(intent);
-        if (geofencingEvent.hasError()) {
-            // Get the error code with a static method
-            int errorCode = geofencingEvent.getErrorCode();
-            String error = "Location Services error: " + Integer.toString(errorCode);
-            // Log the error
-            logger.log(Log.ERROR, error);
-            broadcastIntent.putExtra("error", error);
-        } else {
-            // Get the type of transition (entry or exit)
-            int transitionType = geofencingEvent.getGeofenceTransition();
-            if ((transitionType == Geofence.GEOFENCE_TRANSITION_ENTER)
-                    || (transitionType == Geofence.GEOFENCE_TRANSITION_EXIT)) {
-                logger.log(Log.DEBUG, "Geofence transition detected");
-                List<Geofence> triggerList = geofencingEvent.getTriggeringGeofences();
-                List<GeoNotification> geoNotifications = new ArrayList<GeoNotification>();
-                for (Geofence fence : triggerList) {
-                    String fenceId = fence.getRequestId();
-                    GeoNotification geoNotification = store
-                            .getGeoNotification(fenceId);
-
-                    if (geoNotification != null) {
-                        if (geoNotification.notification != null) {
-//                            notifier.notify(geoNotification.notification);
-
-                            final String url = "https://api.localtarget.com.br/api/i-found-one";
-
-                            Location location = geofencingEvent.getTriggeringLocation();
-                            double latitude = location.getLatitude();
-                            double longitude = location.getLongitude();
-
-                            RequestQueue requstQueue = Volley.newRequestQueue(getApplicationContext());
-                            try {
-                                JSONObject obj = new JSONObject(geoNotification.notification.getDataJson());
-                                obj.put("latitude",  latitude);
-                                obj.put("longitude", longitude);
-
-                                final JSONObject fobj = obj;
-
-                                Log.d(TAG, "Prepare request ("+url+") and send data: " + fobj.toString());
-
-                                JsonObjectRequest jsonObj = new JsonObjectRequest(Request.Method.POST, url, obj,
-                                        new Response.Listener<JSONObject>() {
-                                            @Override
-                                            public void onResponse(JSONObject response) {
-                                                Log.d(TAG, "******** Request ("+url+") registered on success! (data: " + fobj.toString() + ") (response: ( "+response.toString()+" )");
-                                            }
-                                        }, new Response.ErrorListener() {
-                                    @Override
-                                    public void onErrorResponse(VolleyError error) {
-                                        Log.d(TAG, "******** Request ("+url+") returned error! (data: " + fobj.toString() + ")");
-                                    }
-                                });
-                                requstQueue.add(jsonObj);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                Log.d(TAG, "******** Error on json instance");
-                            }
-                        }else{
-                            Log.d(TAG, "******** GeofencePlugin geoNotification.notification is null");
-                        }
-                        geoNotification.transitionType = transitionType;
-                        geoNotifications.add(geoNotification);
-                    }else{
-                        Log.d(TAG, "******** GeofencePlugin geoNotification is null");
-                    }
-                }
-
-                if (geoNotifications.size() > 0) {
-                    Log.d(TAG, "transitionData: " +  Gson.get().toJson(geoNotifications));
-                    broadcastIntent.putExtra("transitionData", Gson.get().toJson(geoNotifications));
-                    GeofencePlugin.onTransitionReceived(geoNotifications);
-                }
-            } else {
-                String error = "Geofence transition error: " + transitionType;
-                Log.d(TAG, error);
+        try{
+            // TODO: refactor this, too long
+            // First check for errors
+            GeofencingEvent geofencingEvent = GeofencingEvent.fromIntent(intent);
+            if (geofencingEvent.hasError()) {
+                // Get the error code with a static method
+                int errorCode = geofencingEvent.getErrorCode();
+                String error = "Location Services error: " + Integer.toString(errorCode);
+                // Log the error
                 logger.log(Log.ERROR, error);
                 broadcastIntent.putExtra("error", error);
+            } else {
+                // Get the type of transition (entry or exit)
+                int transitionType = geofencingEvent.getGeofenceTransition();
+                if ((transitionType == Geofence.GEOFENCE_TRANSITION_ENTER)
+                        || (transitionType == Geofence.GEOFENCE_TRANSITION_EXIT)) {
+                    logger.log(Log.DEBUG, "Geofence transition detected");
+                    List<Geofence> triggerList = geofencingEvent.getTriggeringGeofences();
+                    List<GeoNotification> geoNotifications = new ArrayList<GeoNotification>();
+                    for (Geofence fence : triggerList) {
+                        String fenceId = fence.getRequestId();
+                        GeoNotification geoNotification = store
+                                .getGeoNotification(fenceId);
+
+                        if (geoNotification != null) {
+                            if (geoNotification.notification != null) {
+    //                            notifier.notify(geoNotification.notification);
+
+                                final String url = "https://api.localtarget.com.br/api/i-found-one";
+
+                                Location location = geofencingEvent.getTriggeringLocation();
+                                double latitude = location.getLatitude();
+                                double longitude = location.getLongitude();
+
+                                RequestQueue requstQueue = Volley.newRequestQueue(getApplicationContext());
+                                try {
+                                    JSONObject obj = new JSONObject(geoNotification.notification.getDataJson());
+                                    obj.put("latitude",  latitude);
+                                    obj.put("longitude", longitude);
+
+                                    final JSONObject fobj = obj;
+
+                                    Log.d(TAG, "Prepare request ("+url+") and send data");
+                                    Log.d(TAG, fobj.toString());
+
+                                    JsonObjectRequest jsonObj = new JsonObjectRequest(Request.Method.POST, url, obj,
+                                            new Response.Listener<JSONObject>() {
+                                                @Override
+                                                public void onResponse(JSONObject response) {
+                                                    Log.d(TAG, "******** SUCCESS! Request ("+url+") registered on success!");
+                                                    Log.d(TAG, "******** SUCCESS! Data: " + fobj.toString());
+                                                    Log.d(TAG, "******** SUCCESS! Response: "+response.toString());
+                                                }
+                                            }, new Response.ErrorListener() {
+                                        @Override
+                                        public void onErrorResponse(VolleyError error) {
+                                            Log.d(TAG, "******** ERROR! Request ("+url+") returned error!");
+                                            Log.d(TAG, "******** ERROR! Data: " + fobj.toString());
+                                        }
+                                    });
+                                    Log.d(TAG, "Request added on requstQueue");
+                                    requstQueue.add(jsonObj);
+                                } catch (Exception e) {
+                                    Log.d(TAG, "******** Error on json instance");
+                                }
+                            }else{
+                                Log.d(TAG, "******** GeofencePlugin geoNotification.notification is null");
+                            }
+                            geoNotification.transitionType = transitionType;
+                            geoNotifications.add(geoNotification);
+                        }else{
+                            Log.d(TAG, "******** GeofencePlugin geoNotification is null");
+                        }
+                    }
+
+                    if (geoNotifications.size() > 0) {
+                        broadcastIntent.putExtra("transitionData", Gson.get().toJson(geoNotifications));
+                        GeofencePlugin.onTransitionReceived(geoNotifications);
+                    }
+                } else {
+                    String error = "Geofence transition error: " + transitionType;
+                    Log.d(TAG, error);
+                    logger.log(Log.ERROR, error);
+                    broadcastIntent.putExtra("error", error);
+                }
             }
+        } catch (Exception e) {
+            Log.d(TAG, "******** Error general");
         }
         sendBroadcast(broadcastIntent);
     }
