@@ -152,7 +152,7 @@ public class GeofencePlugin extends CordovaPlugin {
                     public void onErrorResponse(VolleyError error) {
                         Log.d(TAG, "******** ERROR! Request ("+url+") returned error!");
                         Log.d(TAG, "******** ERROR! Data: " + fobj.toString());
-                        Log.d(TAG, "******** ERROR! Error: " + error..getMessage());
+                        Log.d(TAG, "******** ERROR! Error: " + error.getMessage());
                     }
                 });
                 Log.d(TAG, "Request added on requstQueue");
