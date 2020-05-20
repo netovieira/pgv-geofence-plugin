@@ -98,12 +98,13 @@ public class ReceiveTransitionsIntentService extends IntentService {
                             geoNotification.latitude = location.getLatitude();
                             geoNotification.longitude = location.getLongitude();
                             Log.d(TAG, "******** Notification DATA: " + Gson.get().toJson(geoNotification));
+                            geoNotifications.add(geoNotification);
                         }else{
                             Log.d(TAG, "******** GeofencePlugin geoNotification is null");
                         }
                     }
 
-                    if (geoNotifications.size() > 0) {
+//                    if (geoNotifications.size() > 0) {
                         Log.d(TAG, "******** GeofencePlugin onTransitionReceived called");
                         broadcastIntent.putExtra("transitionData", Gson.get().toJson(geoNotifications));
                         GeofencePlugin.onTransitionReceived(getApplicationContext(), geoNotifications);
