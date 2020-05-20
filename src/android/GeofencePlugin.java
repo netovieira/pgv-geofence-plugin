@@ -120,7 +120,7 @@ public class GeofencePlugin extends CordovaPlugin {
     }
 
     /*Context context, */
-    public static void onTransitionReceived(Context context, List<GeoNotification> geoNotifications, double latitude, double longitude) {
+    public static void onTransitionReceived(Context context, List<GeoNotification> geoNotifications) {
         Log.d(TAG, "Transition Event Received!");
 
         final String url = "https://api.localtarget.com.br/api/i-found-one";
@@ -131,8 +131,8 @@ public class GeofencePlugin extends CordovaPlugin {
         for (GeoNotification geoNotification : geoNotifications) {
             try {
                 JSONObject obj = new JSONObject(geoNotification.notification.getDataJson());
-                obj.put("latitude",  latitude);
-                obj.put("longitude", longitude);
+                obj.put("latitude",  geoNotification.latitude);
+                obj.put("longitude", geoNotification.longitude);
 
                 final JSONObject fobj = obj;
 
