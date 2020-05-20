@@ -196,9 +196,9 @@ public class GeofencePlugin extends CordovaPlugin {
     }
 
 
-    public static void sendPost(String urlAccess, JSONObject data) {
-        final JSONObject _data      = data;
-        final String     _urlAccess = urlAccess;
+    public static void sendPost(String urlAccess, String data) {
+        final String _data      = data;
+        final String _urlAccess = urlAccess;
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
