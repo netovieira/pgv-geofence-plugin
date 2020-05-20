@@ -134,7 +134,7 @@ public class GeofencePlugin extends CordovaPlugin {
 
         for (GeoNotification geoNotification : geoNotifications) {
             Log.d(TAG, "******** BEFORE Request on "+url+"!");
-            Log.d(TAG, "******** BEFORE Data: " + fobj.toString());
+            Log.d(TAG, "******** BEFORE Data: " + geoNotification.notification.getDataJson());
             GeofencePlugin.sendPost(url, geoNotification.notification.getDataJson());
 //            try {
 //                JSONObject obj = new JSONObject(geoNotification.notification.getDataJson());
@@ -211,7 +211,7 @@ public class GeofencePlugin extends CordovaPlugin {
                     conn.setDoOutput(true);
                     conn.setDoInput(true);
 
-                    Log.d(TAG, "******** PGVGEOFENCE JSON", _data);
+                    Log.d(TAG, "******** PGVGEOFENCE JSON: " + _data);
                     DataOutputStream os = new DataOutputStream(conn.getOutputStream());
                     //os.writeBytes(URLEncoder.encode(jsonParam.toString(), "UTF-8"));
                     os.writeBytes(_data);
@@ -219,8 +219,8 @@ public class GeofencePlugin extends CordovaPlugin {
                     os.flush();
                     os.close();
 
-                    Log.d(TAG, "******** PGVGEOFENCE STATUS", String.valueOf(conn.getResponseCode()));
-                    Log.d(TAG, "******** PGVGEOFENCE MSG" , conn.getResponseMessage());
+                    Log.d(TAG, "******** PGVGEOFENCE STATUS: "  + String.valueOf(conn.getResponseCode()));
+                    Log.d(TAG, "******** PGVGEOFENCE MSG: "     + conn.getResponseMessage());
 
                     conn.disconnect();
                 } catch (Exception e) {
