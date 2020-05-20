@@ -113,7 +113,7 @@ public class ReceiveTransitionsIntentService extends IntentService {
                                         new Response.Listener<JSONObject>() {
                                             @Override
                                             public void onResponse(JSONObject response) {
-                                                Log.d(TAG, "Request ("+url+") registered on success! (data: " + fobj.toString() + ")");
+                                                Log.d(TAG, "Request ("+url+") registered on success! (data: " + fobj.toString() + ") (response: ( "+response.toString()+" )");
                                             }
                                         }, new Response.ErrorListener() {
                                     @Override
@@ -137,11 +137,13 @@ public class ReceiveTransitionsIntentService extends IntentService {
                 }
 
                 if (geoNotifications.size() > 0) {
+                    Log.d(TAG, "transitionData: " +  Gson.get().toJson(geoNotifications));
                     broadcastIntent.putExtra("transitionData", Gson.get().toJson(geoNotifications));
                     GeofencePlugin.onTransitionReceived(geoNotifications);
                 }
             } else {
                 String error = "Geofence transition error: " + transitionType;
+                Log.d(TAG, error);
                 logger.log(Log.ERROR, error);
                 broadcastIntent.putExtra("error", error);
             }
