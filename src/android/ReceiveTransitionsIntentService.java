@@ -45,7 +45,7 @@ public class ReceiveTransitionsIntentService extends IntentService {
 //        notifier = new GeoNotificationNotifier(
 //                (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE),
 //                this
-        );
+//        );
     }
 
     /**
