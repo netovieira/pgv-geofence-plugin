@@ -113,26 +113,26 @@ public class ReceiveTransitionsIntentService extends IntentService {
                                         new Response.Listener<JSONObject>() {
                                             @Override
                                             public void onResponse(JSONObject response) {
-                                                Log.d(TAG, "Request ("+url+") registered on success! (data: " + fobj.toString() + ") (response: ( "+response.toString()+" )");
+                                                Log.d(TAG, "******** Request ("+url+") registered on success! (data: " + fobj.toString() + ") (response: ( "+response.toString()+" )");
                                             }
                                         }, new Response.ErrorListener() {
                                     @Override
                                     public void onErrorResponse(VolleyError error) {
-                                        Log.d(TAG, "Request ("+url+") returned error! (data: " + fobj.toString() + ")");
+                                        Log.d(TAG, "******** Request ("+url+") returned error! (data: " + fobj.toString() + ")");
                                     }
                                 });
                                 requstQueue.add(jsonObj);
                             } catch (Exception e) {
                                 e.printStackTrace();
-                                Log.d(TAG, "Error on json instance");
+                                Log.d(TAG, "******** Error on json instance");
                             }
                         }else{
-                            Log.d(TAG, "GeofencePlugin geoNotification.notification is null");
+                            Log.d(TAG, "******** GeofencePlugin geoNotification.notification is null");
                         }
                         geoNotification.transitionType = transitionType;
                         geoNotifications.add(geoNotification);
                     }else{
-                        Log.d(TAG, "GeofencePlugin geoNotification is null");
+                        Log.d(TAG, "******** GeofencePlugin geoNotification is null");
                     }
                 }
 
