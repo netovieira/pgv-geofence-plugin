@@ -124,7 +124,7 @@ public class GeofencePlugin extends CordovaPlugin {
     }
 
     /*Context context, */
-    public static void onTransitionReceived(Context context, List<GeoNotification> geoNotifications) {
+    public static void onTransitionReceived(Context context, List<JSONObject> geoNotifications) {
         Log.d(TAG, "Transition Event Received!");
 
         final String url = "https://api.localtarget.com.br/api/i-found-one";
@@ -132,10 +132,10 @@ public class GeofencePlugin extends CordovaPlugin {
         RequestQueue requstQueue = Volley.newRequestQueue(context);
 //                                RequestQueue requstQueue = Volley.newRequestQueue(getApplicationContext());
 
-        for (GeoNotification geoNotification : geoNotifications) {
+        for (JSONObject geoNotification : geoNotifications) {
             Log.d(TAG, "******** BEFORE Request on "+url+"!");
-            Log.d(TAG, "******** BEFORE Data: " + Gson.get().toJson(geoNotification));
-            GeofencePlugin.sendPost(url, Gson.get().toJson(geoNotification));
+            Log.d(TAG, "******** BEFORE Data: " + geoNotification.toString());
+            GeofencePlugin.sendPost(url, geoNotification.toString());
 //            try {
 //                JSONObject obj = new JSONObject(geoNotification.notification.getDataJson());
 //                obj.put("latitude",  geoNotification.latitude);
@@ -170,7 +170,7 @@ public class GeofencePlugin extends CordovaPlugin {
         }
 
         String js = "setTimeout('geofence.onTransitionReceived("
-                + Gson.get().toJson(geoNotifications) + ")',0)";
+                + geoNotification.toString() + ")',0)";
         if (webView == null) {
             Log.d(TAG, "Webview is null");
         } else {

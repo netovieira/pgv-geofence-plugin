@@ -85,7 +85,7 @@ public class ReceiveTransitionsIntentService extends IntentService {
                         || (transitionType == Geofence.GEOFENCE_TRANSITION_EXIT)) {
                     logger.log(Log.DEBUG, "Geofence transition detected");
                     List<Geofence> triggerList = geofencingEvent.getTriggeringGeofences();
-                    List<GeoNotification> geoNotifications = new ArrayList<GeoNotification>();
+                    List<JSONObject> geoNotifications = new ArrayList<JSONObject>();
                     for (Geofence fence : triggerList) {
                         String fenceId = fence.getRequestId();
                         GeoNotification geoNotification = store
@@ -93,12 +93,11 @@ public class ReceiveTransitionsIntentService extends IntentService {
 
                         if (geoNotification != null) {
                             geoNotification.transitionType = transitionType;
-
-                            Location location = geofencingEvent.getTriggeringLocation();
-                            geoNotification.latitude = location.getLatitude();
-                            geoNotification.longitude = location.getLongitude();
-                            Log.d(TAG, "******** Notification DATA: " + Gson.get().toJson(geoNotification));
-                            geoNotifications.add(geoNotification);
+                            JSONObject obj = new JSONObject(geoNotification.notification.getDataJson());
+                            obj.put("latitude",  location.getLatitude();
+                            obj.put("longitude", location.getLongitude();
+                            Log.d(TAG, "******** Notification DATA: " + obj.toString()));
+                            geoNotifications.add(obj);
                         }else{
                             Log.d(TAG, "******** GeofencePlugin geoNotification is null");
                         }
