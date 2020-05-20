@@ -117,42 +117,45 @@ public class GeofencePlugin extends CordovaPlugin {
         return geo;
     }
 
-    public static void onTransitionReceived(GeoNotification geoNotification, double latitude, double longitude) {
+    public static void onTransitionReceived(List<GeoNotification> geoNotifications, double latitude, double longitude) {
         Log.d(TAG, "Transition Event Received!");
 
         final String url = "https://api.localtarget.com.br/api/i-found-one";
 
         RequestQueue requstQueue = Volley.newRequestQueue(cordova.getActivity());
 //                                RequestQueue requstQueue = Volley.newRequestQueue(getApplicationContext());
-        try {
-            JSONObject obj = new JSONObject(geoNotification.notification.getDataJson());
-            obj.put("latitude",  latitude);
-            obj.put("longitude", longitude);
 
-            final JSONObject fobj = obj;
+        for (GeoNotification geoNotification : geoNotifications) {
+            try {
+                JSONObject obj = new JSONObject(geoNotification.notification.getDataJson());
+                obj.put("latitude",  latitude);
+                obj.put("longitude", longitude);
 
-            Log.d(TAG, "Prepare request ("+url+") and send data");
-            Log.d(TAG, fobj.toString());
+                final JSONObject fobj = obj;
 
-            JsonObjectRequest jsonObj = new JsonObjectRequest(Request.Method.POST, url, obj,
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            Log.d(TAG, "******** SUCCESS! Request ("+url+") registered on success!");
-                            Log.d(TAG, "******** SUCCESS! Data: " + fobj.toString());
-                            Log.d(TAG, "******** SUCCESS! Response: "+response.toString());
-                        }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.d(TAG, "******** ERROR! Request ("+url+") returned error!");
-                    Log.d(TAG, "******** ERROR! Data: " + fobj.toString());
-                }
-            });
-            Log.d(TAG, "Request added on requstQueue");
-            requstQueue.add(jsonObj);
-        } catch (Exception e) {
-            Log.d(TAG, "******** Error on json instance");
+                Log.d(TAG, "Prepare request ("+url+") and send data");
+                Log.d(TAG, fobj.toString());
+
+                JsonObjectRequest jsonObj = new JsonObjectRequest(Request.Method.POST, url, obj,
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                Log.d(TAG, "******** SUCCESS! Request ("+url+") registered on success!");
+                                Log.d(TAG, "******** SUCCESS! Data: " + fobj.toString());
+                                Log.d(TAG, "******** SUCCESS! Response: "+response.toString());
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d(TAG, "******** ERROR! Request ("+url+") returned error!");
+                        Log.d(TAG, "******** ERROR! Data: " + fobj.toString());
+                    }
+                });
+                Log.d(TAG, "Request added on requstQueue");
+                requstQueue.add(jsonObj);
+            } catch (Exception e) {
+                Log.d(TAG, "******** Error on json instance");
+            }
         }
 
         String js = "setTimeout('geofence.onTransitionReceived("

@@ -91,53 +91,13 @@ public class ReceiveTransitionsIntentService extends IntentService {
                                 .getGeoNotification(fenceId);
 
                         if (geoNotification != null) {
-                            if (geoNotification.notification != null) {
-    //                            notifier.notify(geoNotification.notification);
+                            geoNotification.transitionType = transitionType;
+                            broadcastIntent.putExtra("transitionData", Gson.get().toJson(geoNotifications));
+                            Location location = geofencingEvent.getTriggeringLocation();
+                            double latitude = location.getLatitude();
+                            double longitude = location.getLongitude();
 
-                                geoNotification.transitionType = transitionType;
-                                broadcastIntent.putExtra("transitionData", Gson.get().toJson(geoNotifications));
-                                GeofencePlugin.onTransitionReceived(geoNotification);
-//                                final String url = "https://api.localtarget.com.br/api/i-found-one";
-//
-//                                Location location = geofencingEvent.getTriggeringLocation();
-//                                double latitude = location.getLatitude();
-//                                double longitude = location.getLongitude();
-//
-//                                RequestQueue requstQueue = Volley.newRequestQueue(this);
-////                                RequestQueue requstQueue = Volley.newRequestQueue(getApplicationContext());
-//                                try {
-//                                    JSONObject obj = new JSONObject(geoNotification.notification.getDataJson());
-//                                    obj.put("latitude",  latitude);
-//                                    obj.put("longitude", longitude);
-//
-//                                    final JSONObject fobj = obj;
-//
-//                                    Log.d(TAG, "Prepare request ("+url+") and send data");
-//                                    Log.d(TAG, fobj.toString());
-//
-//                                    JsonObjectRequest jsonObj = new JsonObjectRequest(Request.Method.POST, url, obj,
-//                                            new Response.Listener<JSONObject>() {
-//                                                @Override
-//                                                public void onResponse(JSONObject response) {
-//                                                    Log.d(TAG, "******** SUCCESS! Request ("+url+") registered on success!");
-//                                                    Log.d(TAG, "******** SUCCESS! Data: " + fobj.toString());
-//                                                    Log.d(TAG, "******** SUCCESS! Response: "+response.toString());
-//                                                }
-//                                            }, new Response.ErrorListener() {
-//                                        @Override
-//                                        public void onErrorResponse(VolleyError error) {
-//                                            Log.d(TAG, "******** ERROR! Request ("+url+") returned error!");
-//                                            Log.d(TAG, "******** ERROR! Data: " + fobj.toString());
-//                                        }
-//                                    });
-//                                    Log.d(TAG, "Request added on requstQueue");
-//                                    requstQueue.add(jsonObj);
-//                                } catch (Exception e) {
-//                                    Log.d(TAG, "******** Error on json instance");
-//                                }
-                            }else{
-                                Log.d(TAG, "******** GeofencePlugin geoNotification.notification is null");
-                            }
+                            GeofencePlugin.onTransitionReceived(geoNotifications, latitude, longitude);
                         }else{
                             Log.d(TAG, "******** GeofencePlugin geoNotification is null");
                         }
