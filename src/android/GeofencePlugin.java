@@ -174,7 +174,6 @@ public class GeofencePlugin extends CordovaPlugin {
     private void deviceReady() {
         Intent intent = cordova.getActivity().getIntent();
         String data = intent.getStringExtra("geofence.notification.data");
-        LocalBroadcastManager.getInstance(this).registerReceiver(mReceiver, new IntentFilter(ReceiveTransitionsIntentService.SERVICE_MESSAGE));
     }
 
     private void initialize(CallbackContext callbackContext) {
