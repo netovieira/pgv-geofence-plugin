@@ -122,7 +122,7 @@ public class GeofencePlugin extends CordovaPlugin {
 
         final String url = "https://api.localtarget.com.br/api/i-found-one";
 
-        RequestQueue requstQueue = Volley.newRequestQueue(this.context);
+        RequestQueue requstQueue = Volley.newRequestQueue(getApplicationContext());
 //                                RequestQueue requstQueue = Volley.newRequestQueue(getApplicationContext());
 
         for (GeoNotification geoNotification : geoNotifications) {
