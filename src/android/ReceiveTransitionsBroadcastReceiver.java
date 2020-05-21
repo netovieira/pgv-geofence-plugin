@@ -31,7 +31,7 @@ public class ReceiveTransitionsBroadcastReceiver extends BroadcastReceiver {
                 // Get the error code with a static method
                 int errorCode = geofencingEvent.getErrorCode();
                 String error = "Location Services error: " + Integer.toString(errorCode);
-                Log.e(GeofencePlugin.TAG, error);
+                Log.d(GeofencePlugin.TAG, error);
             } else {
                 // Get the type of transition (entry or exit)
                 int transitionType = geofencingEvent.getGeofenceTransition();
@@ -56,11 +56,11 @@ public class ReceiveTransitionsBroadcastReceiver extends BroadcastReceiver {
                     }
                 } else {
                     String error = "Geofence transition error: " + transitionType;
-                    Log.e(GeofencePlugin.TAG, error);
+                    Log.d(GeofencePlugin.TAG, error);
                 }
             }
         } catch (Exception e) {
-            Log.e(GeofencePlugin.TAG, "******** Error general");
+            Log.d(GeofencePlugin.TAG, "******** Error general");
         }
     }
 }

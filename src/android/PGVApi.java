@@ -37,46 +37,46 @@ public class PGVApi {
                 Log.d(TAG, "******** Notification DATA: " + obj.toString());
                 PGVApi.sendPost("i-found-one", geoNotification.toString());
             }catch (Exception e){
-                Log.e(TAG, "******** GeofencePlugin JSONObject catch error: " + e.getMessage());
+                Log.d(TAG, "******** GeofencePlugin JSONObject catch error: " + e.getMessage());
             }
         }else{
-            Log.e(TAG, "******** GeofencePlugin geoNotification is null");
+            Log.d(TAG, "******** GeofencePlugin geoNotification is null");
         }
     }
 
 
     public static void sendPost(final String path, final String data) {
-//        Thread thread = new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-        try {
-            URL url = new URL(PGVApi.BASE_URL + path);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
-            conn.setRequestProperty("Accept","application/json");
-            conn.setDoOutput(true);
-            conn.setDoInput(true);
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    URL url = new URL(PGVApi.BASE_URL + path);
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("POST");
+                    conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+                    conn.setRequestProperty("Accept","application/json");
+                    conn.setDoOutput(true);
+                    conn.setDoInput(true);
 
-            Log.d(TAG, "******** PGVGEOFENCE WRITE JSON: " + data);
-            DataOutputStream os = new DataOutputStream(conn.getOutputStream());
-            //os.writeBytes(URLEncoder.encode(jsonParam.toString(), "UTF-8"));
-            os.writeBytes(data);
+                    Log.d(TAG, "******** PGVGEOFENCE WRITE JSON: " + data);
+                    DataOutputStream os = new DataOutputStream(conn.getOutputStream());
+                    //os.writeBytes(URLEncoder.encode(jsonParam.toString(), "UTF-8"));
+                    os.writeBytes(data);
 
-            os.flush();
-            os.close();
+                    os.flush();
+                    os.close();
 
-            Log.d(TAG, "******** PGVGEOFENCE STATUS: "  + String.valueOf(conn.getResponseCode()));
-            Log.d(TAG, "******** PGVGEOFENCE MSG: "     + conn.getResponseMessage());
+                    Log.d(TAG, "******** PGVGEOFENCE STATUS: "  + String.valueOf(conn.getResponseCode()));
+                    Log.d(TAG, "******** PGVGEOFENCE MSG: "     + conn.getResponseMessage());
 
-            conn.disconnect();
-        } catch (Exception e) {
-            Log.e(TAG, "******** PGVGEOFENCE POST EXCEPTION ERROR: " + e.getMessage());
-            e.printStackTrace();
-        }
-//            }
-//        });
-//
-//        thread.start();
+                    conn.disconnect();
+                } catch (Exception e) {
+                    Log.d(TAG, "******** PGVGEOFENCE POST EXCEPTION ERROR: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        thread.start();
     }
 }
