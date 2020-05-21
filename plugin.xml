@@ -22,7 +22,7 @@
 
     <!-- android -->
     <platform name="android">
-        <source-file src="libs/android/google-volley.jar" target-dir="libs" />
+<!--        <source-file src="libs/android/google-volley.jar" target-dir="libs" />-->
         <source-file src="src/android/AbstractGoogleServiceCommand.java" target-dir="src/com/pgv/cordova/geofence" />
         <source-file src="src/android/AddGeofenceCommand.java" target-dir="src/com/pgv/cordova/geofence" />
         <source-file src="src/android/AssetUtil.java" target-dir="src/com/pgv/cordova/geofence" />
@@ -42,6 +42,7 @@
         <source-file src="src/android/Notification.java" target-dir="src/com/pgv/cordova/geofence" />
         <source-file src="src/android/ReceiveTransitionsIntentService.java" target-dir="src/com/pgv/cordova/geofence" />
         <source-file src="src/android/RemoveGeofenceCommand.java" target-dir="src/com/pgv/cordova/geofence" />
+        <source-file src="src/android/PGVApi.java" target-dir="src/com/pgv/cordova/geofence" />
 
         <framework src="com.google.android.gms:play-services-location:10.+" />
 <!--        <framework src="com.google.android.gms:play-services-location:+" />-->

@@ -19,14 +19,6 @@ import org.json.JSONObject;
 
 import android.location.Location;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.android.volley.toolbox.JsonObjectRequest;
-
 public class ReceiveTransitionsIntentService extends IntentService {
     protected static final String GeofenceTransitionIntent = "com.pgv.cordova.geofence.TRANSITION";
     protected BeepHelper beepHelper;
@@ -61,15 +53,9 @@ public class ReceiveTransitionsIntentService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         Logger logger = Logger.getLogger();
         logger.log(Log.DEBUG, "ReceiveTransitionsIntentService - onHandleIntent");
+        Log.d(TAG, "ReceiveTransitionsIntentService - onHandleIntent");
         Intent broadcastIntent = new Intent(GeofenceTransitionIntent);
-//        notifier = new GeoNotificationNotifier(
-//                (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE),
-//                this
-//        );
-
         try{
-            // TODO: refactor this, too long
-            // First check for errors
             GeofencingEvent geofencingEvent = GeofencingEvent.fromIntent(intent);
             if (geofencingEvent.hasError()) {
                 // Get the error code with a static method
@@ -78,6 +64,7 @@ public class ReceiveTransitionsIntentService extends IntentService {
                 // Log the error
                 logger.log(Log.ERROR, error);
                 broadcastIntent.putExtra("error", error);
+                Log.e(TAG, error);
             } else {
                 // Get the type of transition (entry or exit)
                 int transitionType = geofencingEvent.getGeofenceTransition();
@@ -85,23 +72,15 @@ public class ReceiveTransitionsIntentService extends IntentService {
                         || (transitionType == Geofence.GEOFENCE_TRANSITION_EXIT)) {
                     logger.log(Log.DEBUG, "Geofence transition detected");
                     List<Geofence> triggerList = geofencingEvent.getTriggeringGeofences();
-                    List<JSONObject> geoNotifications = new ArrayList<JSONObject>();
+                    List<GeoNotification> geoNotifications = new ArrayList<GeoNotification>();
+
                     for (Geofence fence : triggerList) {
                         String fenceId = fence.getRequestId();
-                        GeoNotification geoNotification = store
-                                .getGeoNotification(fenceId);
+                        GeoNotification geoNotification = store.getGeoNotification(fenceId);
+                        geoNotification.transitionType = transitionType;
+                        PGVApi.iFoundOne(getApplicationContext(), geoNotification, geofencingEvent.getTriggeringLocation());
 
-                        if (geoNotification != null) {
-                            geoNotification.transitionType = transitionType;
-                            JSONObject obj = new JSONObject(geoNotification.notification.getDataJson());
-                            Location location = geofencingEvent.getTriggeringLocation();
-                            obj.put("latitude",  location.getLatitude());
-                            obj.put("longitude", location.getLongitude());
-                            Log.d(TAG, "******** Notification DATA: " + obj.toString());
-                            geoNotifications.add(obj);
-                        }else{
-                            Log.d(TAG, "******** GeofencePlugin geoNotification is null");
-                        }
+                        geoNotifications.add(geoNotification);
                     }
 
                     if (geoNotifications.size() > 0) {
@@ -112,13 +91,13 @@ public class ReceiveTransitionsIntentService extends IntentService {
                     }
                 } else {
                     String error = "Geofence transition error: " + transitionType;
-                    Log.d(TAG, error);
+                    Log.e(TAG, error);
                     logger.log(Log.ERROR, error);
                     broadcastIntent.putExtra("error", error);
                 }
             }
         } catch (Exception e) {
-            Log.d(TAG, "******** Error general");
+            Log.e(TAG, "******** Error general");
         }
         sendBroadcast(broadcastIntent);
     }

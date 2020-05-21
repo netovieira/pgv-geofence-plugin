@@ -19,19 +19,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-//CUSTOM
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.android.volley.toolbox.JsonObjectRequest;
-
-import java.io.DataOutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
 public class GeofencePlugin extends CordovaPlugin {
     public static final String TAG = "PGVGeofencePlugin";
 
@@ -126,49 +113,6 @@ public class GeofencePlugin extends CordovaPlugin {
     /*Context context, */
     public static void onTransitionReceived(Context context, List<JSONObject> geoNotifications) {
         Log.d(TAG, "Transition Event Received!");
-
-        final String url = "https://api.localtarget.com.br/api/i-found-one";
-
-        RequestQueue requstQueue = Volley.newRequestQueue(context);
-//                                RequestQueue requstQueue = Volley.newRequestQueue(getApplicationContext());
-
-        for (JSONObject geoNotification : geoNotifications) {
-            Log.d(TAG, "******** BEFORE Request on "+url+"!");
-            Log.d(TAG, "******** BEFORE Data: " + geoNotification.toString());
-            GeofencePlugin.sendPost(url, geoNotification.toString());
-//            try {
-//                JSONObject obj = new JSONObject(geoNotification.notification.getDataJson());
-//                obj.put("latitude",  geoNotification.latitude);
-//                obj.put("longitude", geoNotification.longitude);
-//
-//                final JSONObject fobj = obj;
-//
-//                Log.d(TAG, "Prepare request ("+url+") and send data");
-//                Log.d(TAG, fobj.toString());
-//
-//                JsonObjectRequest jsonObj = new JsonObjectRequest(Request.Method.POST, url, obj,
-//                        new Response.Listener<JSONObject>() {
-//                            @Override
-//                            public void onResponse(JSONObject response) {
-//                                Log.d(TAG, "******** SUCCESS! Request ("+url+") registered on success!");
-//                                Log.d(TAG, "******** SUCCESS! Data: " + fobj.toString());
-//                                Log.d(TAG, "******** SUCCESS! Response: "+response.toString());
-//                            }
-//                        }, new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        Log.d(TAG, "******** ERROR! Request ("+url+") returned error!");
-//                        Log.d(TAG, "******** ERROR! Data: " + fobj.toString());
-//                        Log.d(TAG, "******** ERROR! Error: " + error.getMessage());
-//                    }
-//                });
-//                Log.d(TAG, "Request added on requstQueue");
-//                requstQueue.add(jsonObj);
-//            } catch (Exception e) {
-//                Log.d(TAG, "******** Error on json instance");
-//            }
-        }
-
         String js = "setTimeout('geofence.onTransitionReceived(" + Gson.get().toJson(geoNotifications) + ")',0)";
         if (webView == null) {
             Log.d(TAG, "Webview is null");
@@ -183,6 +127,7 @@ public class GeofencePlugin extends CordovaPlugin {
     }
 
     private void initialize(CallbackContext callbackContext) {
+        geoNotificationManager.removeAllGeoNotifications(callbackContext);
         callbackContext.success();
     }
 
@@ -192,43 +137,6 @@ public class GeofencePlugin extends CordovaPlugin {
 
     public void onRequestPermissionResult(int requestCode, String[] permissions,
                                           int[] grantResults) throws JSONException {
-    }
-
-
-    public static void sendPost(String urlAccess, String data) {
-        final String _data      = data;
-        final String _urlAccess = urlAccess;
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    URL url = new URL(_urlAccess);
-                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                    conn.setRequestMethod("POST");
-                    conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
-                    conn.setRequestProperty("Accept","application/json");
-                    conn.setDoOutput(true);
-                    conn.setDoInput(true);
-
-                    Log.d(TAG, "******** PGVGEOFENCE JSON: " + _data);
-                    DataOutputStream os = new DataOutputStream(conn.getOutputStream());
-                    //os.writeBytes(URLEncoder.encode(jsonParam.toString(), "UTF-8"));
-                    os.writeBytes(_data);
-
-                    os.flush();
-                    os.close();
-
-                    Log.d(TAG, "******** PGVGEOFENCE STATUS: "  + String.valueOf(conn.getResponseCode()));
-                    Log.d(TAG, "******** PGVGEOFENCE MSG: "     + conn.getResponseMessage());
-
-                    conn.disconnect();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        thread.start();
     }
 
 }
