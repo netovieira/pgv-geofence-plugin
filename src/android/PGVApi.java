@@ -1,4 +1,4 @@
-package dev.pgvtecnologia.pgvgeofence;
+package com.pgv.cordova.geofence;
 
 import android.content.Context;
 import android.content.Intent;

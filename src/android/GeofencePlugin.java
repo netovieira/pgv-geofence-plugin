@@ -1,4 +1,4 @@
-package dev.pgvtecnologia.pgvgeofence;
+package com.pgv.cordova.geofence;
 
 import android.content.Context;
 import android.content.Intent;
@@ -58,7 +58,6 @@ public class GeofencePlugin extends CordovaPlugin {
         super.initialize(cordova, webView);
         GeofencePlugin.webView = webView;
         context = this.cordova.getActivity().getApplicationContext();
-        Logger.setLogger(new Logger(TAG, context, false));
         geoNotificationManager = new GeoNotificationManager(context);
     }
 
