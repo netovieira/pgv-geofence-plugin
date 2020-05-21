@@ -1,4 +1,4 @@
-package com.pgv.cordova.geofence;
+package dev.pgvtecnologia.pgvgeofence;
 
 import android.content.Context;
 import android.content.Intent;
@@ -111,7 +111,7 @@ public class GeofencePlugin extends CordovaPlugin {
     }
 
     /*Context context, */
-    public static void onTransitionReceived(Context context, List<JSONObject> geoNotifications) {
+    public static void onTransitionReceived(Context context, List<GeoNotification> geoNotifications) {
         Log.d(TAG, "Transition Event Received!");
         String js = "setTimeout('geofence.onTransitionReceived(" + Gson.get().toJson(geoNotifications) + ")',0)";
         if (webView == null) {

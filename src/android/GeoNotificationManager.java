@@ -108,9 +108,9 @@ public class GeoNotificationManager {
      * geofence transition occurs.
      */
     private PendingIntent getTransitionPendingIntent() {
-        Intent intent = new Intent(context, ReceiveTransitionsIntentService.class);
+        Intent intent = new Intent(context, ReceiveTransitionsBroadcastReceiver.class);
         logger.log(Log.DEBUG, "Geofence Intent created!");
-        return PendingIntent.getService(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
 }

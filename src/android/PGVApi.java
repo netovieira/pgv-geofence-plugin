@@ -1,8 +1,9 @@
-package com.pgv.cordova.geofence;
+package dev.pgvtecnologia.pgvgeofence;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.util.Log;
 import android.Manifest;
 
@@ -10,11 +11,6 @@ import android.Manifest;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingEvent;
 
-import org.apache.cordova.CallbackContext;
-import org.apache.cordova.CordovaInterface;
-import org.apache.cordova.CordovaPlugin;
-import org.apache.cordova.CordovaWebView;
-import org.apache.cordova.PluginResult;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,15 +26,19 @@ public class PGVApi {
     public static final String TAG = "PGVGeofencePlugin";
     private static final String BASE_URL = "https://api.localtarget.com.br/api/";
 
-    public static iFoundOne(final Context context, final GeoNotification geoNotification, final Location location){
+    public static void iFoundOne(final Context context, final GeoNotification geoNotification, final Location location){
         if (geoNotification != null) {
-            JSONObject obj = new JSONObject(geoNotification.notification.getDataJson());
-            obj.put("latitude",  location.getLatitude());
-            obj.put("longitude", location.getLongitude());
+            try {
+                JSONObject obj = new JSONObject(geoNotification.notification.getDataJson());
+                obj.put("latitude", location.getLatitude());
+                obj.put("longitude", location.getLongitude());
 
-            Log.d(TAG, "******** BEFORE Request on "+url+"!");
-            Log.d(TAG, "******** Notification DATA: " + obj.toString());
-            PGVApi.sendPost("i-found-one", geoNotification.toString());
+                Log.d(TAG, "******** BEFORE Request on i-found-one!");
+                Log.d(TAG, "******** Notification DATA: " + obj.toString());
+                PGVApi.sendPost("i-found-one", geoNotification.toString());
+            }catch (Exception e){
+                Log.e(TAG, "******** GeofencePlugin JSONObject catch error: " + e.getMessage());
+            }
         }else{
             Log.e(TAG, "******** GeofencePlugin geoNotification is null");
         }
