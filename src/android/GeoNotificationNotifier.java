@@ -15,13 +15,10 @@ public class GeoNotificationNotifier {
     private NotificationManager notificationManager;
     private Context context;
     private BeepHelper beepHelper;
-    private Logger logger;
-
     public GeoNotificationNotifier(NotificationManager notificationManager, Context context) {
         this.notificationManager = notificationManager;
         this.context = context;
         this.beepHelper = new BeepHelper();
-        this.logger = Logger.getLogger();
     }
 
     public void notify(Notification notification) {

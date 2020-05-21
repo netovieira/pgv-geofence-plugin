@@ -18,7 +18,6 @@ import java.util.List;
 public class GeoNotificationManager {
     private Context context;
     private GeoNotificationStore geoNotificationStore;
-    private Logger logger;
     private List<Geofence> geoFences;
     private PendingIntent pendingIntent;
     private GoogleServiceCommandExecutor googleServiceCommandExecutor;
@@ -26,7 +25,6 @@ public class GeoNotificationManager {
     public GeoNotificationManager(Context context) {
         this.context = context;
         geoNotificationStore = new GeoNotificationStore(context);
-        logger = Logger.getLogger();
         googleServiceCommandExecutor = new GoogleServiceCommandExecutor();
         pendingIntent = getTransitionPendingIntent();
         if (areGoogleServicesAvailable()) {
