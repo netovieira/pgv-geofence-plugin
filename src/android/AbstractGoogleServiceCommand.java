@@ -15,7 +15,6 @@ import java.util.List;
 
 public abstract class AbstractGoogleServiceCommand implements
         ConnectionCallbacks, OnConnectionFailedListener{
-    protected Logger logger;
     protected boolean connectionInProgress = false;
     protected List<IGoogleServiceCommandListener> listeners;
     protected Context context;
@@ -36,7 +35,7 @@ public abstract class AbstractGoogleServiceCommand implements
         if (!mGoogleApiClient.isConnected() ||
             (!mGoogleApiClient.isConnecting() && !connectionInProgress)) {
             connectionInProgress = true;
-            logger.log(Log.DEBUG, "Connecting location client");
+            Log.d(GeofencePlugin.TAG, , "Connecting location client");
             mGoogleApiClient.connect();
         }
     }
@@ -44,7 +43,7 @@ public abstract class AbstractGoogleServiceCommand implements
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
         connectionInProgress = false;
-        logger.log(Log.DEBUG, "Connecting to google services fail - "
+        Log.d(GeofencePlugin.TAG, , "Connecting to google services fail - "
                 + connectionResult.toString());
 
         // TODO: invoke CommandExucuted with ERROR
@@ -53,7 +52,7 @@ public abstract class AbstractGoogleServiceCommand implements
     @Override
     public void onConnected(Bundle arg0) {
         // TODO Auto-generated method stub
-        logger.log(Log.DEBUG, "Google play services connected");
+        Log.d(GeofencePlugin.TAG, , "Google play services connected");
         // Get the PendingIntent for the request
         ExecuteCustomCode();
     }

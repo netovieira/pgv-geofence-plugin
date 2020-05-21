@@ -8,7 +8,6 @@ public class BootReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Logger.setLogger(new Logger(GeofencePlugin.TAG, context, false));
         GeoNotificationManager manager = new GeoNotificationManager(context);
         manager.loadFromStorageAndInitializeGeofences();
     }

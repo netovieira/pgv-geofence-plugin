@@ -31,7 +31,7 @@ public class AddGeofenceCommand extends AbstractGoogleServiceCommand {
 
     @Override
     public void ExecuteCustomCode() {
-        logger.log(Log.DEBUG, "Adding new geofences...");
+        Log.d(GeofencePlugin.TAG, "Adding new geofences...");
         if (geofencesToAdd != null && geofencesToAdd.size() > 0) try {
             LocationServices.GeofencingApi
                 .addGeofences(mGoogleApiClient, geofencesToAdd, pendingIntent)
@@ -39,7 +39,7 @@ public class AddGeofenceCommand extends AbstractGoogleServiceCommand {
                     @Override
                     public void onResult(Status status) {
                         if (status.isSuccess()) {
-                            logger.log(Log.DEBUG, "Geofences successfully added");
+                            Log.d(GeofencePlugin.TAG, "Geofences successfully added");
                             CommandExecuted();
                         } else try {
                             Map<Integer, String> errorCodeMap = new HashMap<Integer, String>();
@@ -59,7 +59,7 @@ public class AddGeofenceCommand extends AbstractGoogleServiceCommand {
                                 error.put("code", GeofencePlugin.ERROR_UNKNOWN);
                             }
 
-                            logger.log(Log.ERROR, message);
+                            Log.e(GeofencePlugin.TAG, message);
                             CommandExecuted(error);
                         } catch (JSONException exception) {
                             CommandExecuted(exception);
@@ -67,7 +67,7 @@ public class AddGeofenceCommand extends AbstractGoogleServiceCommand {
                     }
                 });
         } catch (Exception exception) {
-            logger.log(LOG.ERROR, "Exception while adding geofences");
+            Log.e(GeofencePlugin.TAG, "Exception while adding geofences");
             exception.printStackTrace();
             CommandExecuted(exception);
         }
