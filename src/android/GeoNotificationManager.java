@@ -30,7 +30,7 @@ public class GeoNotificationManager {
         googleServiceCommandExecutor = new GoogleServiceCommandExecutor();
         pendingIntent = getTransitionPendingIntent();
         if (areGoogleServicesAvailable()) {
-            Log.d(GeofencePlugin.TAG, , "Google play services available");
+            Log.d(GeofencePlugin.TAG, "Google play services available");
         } else {
             Log.e(GeofencePlugin.TAG, "Google play services not available. Geofence plugin will not work correctly.");
         }
@@ -109,7 +109,7 @@ public class GeoNotificationManager {
      */
     private PendingIntent getTransitionPendingIntent() {
         Intent intent = new Intent(context, ReceiveTransitionsBroadcastReceiver.class);
-        Log.d(GeofencePlugin.TAG, , "Geofence Intent created!");
+        Log.d(GeofencePlugin.TAG, "Geofence Intent created!");
         return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 

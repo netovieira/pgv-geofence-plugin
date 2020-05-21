@@ -35,7 +35,7 @@ public abstract class AbstractGoogleServiceCommand implements
         if (!mGoogleApiClient.isConnected() ||
             (!mGoogleApiClient.isConnecting() && !connectionInProgress)) {
             connectionInProgress = true;
-            Log.d(GeofencePlugin.TAG, , "Connecting location client");
+            Log.d(GeofencePlugin.TAG, "Connecting location client");
             mGoogleApiClient.connect();
         }
     }
@@ -43,7 +43,7 @@ public abstract class AbstractGoogleServiceCommand implements
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
         connectionInProgress = false;
-        Log.d(GeofencePlugin.TAG, , "Connecting to google services fail - "
+        Log.d(GeofencePlugin.TAG, "Connecting to google services fail - "
                 + connectionResult.toString());
 
         // TODO: invoke CommandExucuted with ERROR
@@ -52,7 +52,7 @@ public abstract class AbstractGoogleServiceCommand implements
     @Override
     public void onConnected(Bundle arg0) {
         // TODO Auto-generated method stub
-        Log.d(GeofencePlugin.TAG, , "Google play services connected");
+        Log.d(GeofencePlugin.TAG, "Google play services connected");
         // Get the PendingIntent for the request
         ExecuteCustomCode();
     }

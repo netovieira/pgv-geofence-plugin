@@ -58,6 +58,6 @@ public class GeoNotificationNotifier {
             e.printStackTrace();
         }
         notificationManager.notify(notification.id, mBuilder.build());
-        Log.d(GeofencePlugin.TAG, , notification.toString());
+        Log.d(GeofencePlugin.TAG, notification.toString());
     }
 }

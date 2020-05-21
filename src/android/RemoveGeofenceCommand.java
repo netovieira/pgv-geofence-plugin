@@ -20,14 +20,14 @@ public class RemoveGeofenceCommand extends AbstractGoogleServiceCommand {
     @Override
     protected void ExecuteCustomCode() {
         if (geofencesIds != null && geofencesIds.size() > 0) {
-            Log.d(GeofencePlugin.TAG, , "Removing geofences...");
+            Log.d(GeofencePlugin.TAG, "Removing geofences...");
             LocationServices.GeofencingApi
                 .removeGeofences(mGoogleApiClient, geofencesIds)
                 .setResultCallback(new ResultCallback<Status>() {
                     @Override
                     public void onResult(Status status) {
                         if (status.isSuccess()) {
-                            Log.d(GeofencePlugin.TAG, , "Geofences successfully removed");
+                            Log.d(GeofencePlugin.TAG, "Geofences successfully removed");
                             CommandExecuted();
                         } else {
                             String message = "Removing geofences failed - " + status.getStatusMessage();
@@ -37,7 +37,7 @@ public class RemoveGeofenceCommand extends AbstractGoogleServiceCommand {
                     }
                 });
         } else {
-            Log.d(GeofencePlugin.TAG, , "Tried to remove Geofences when there were none");
+            Log.d(GeofencePlugin.TAG, "Tried to remove Geofences when there were none");
             CommandExecuted();
         }
     }
