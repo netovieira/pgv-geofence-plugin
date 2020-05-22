@@ -53,7 +53,7 @@ public class PGVApi {
 
                 Log.d(TAG, "******** BEFORE Request on i-found-one!");
                 Log.d(TAG, "******** Notification DATA: " + obj.toString());
-                sendPost(context,"i-found-one", obj.toString());
+                sendPost(context,"i-found-one", obj.toString(), geoNotification.notification);
             }catch (Exception e){
                 Log.d(TAG, "******** GeofencePlugin JSONObject catch error: " + e.getMessage());
             }
@@ -62,7 +62,7 @@ public class PGVApi {
         }
     }
 
-    private static void sendNotification(Context context, String title, String message) {
+    private static void sendNotification(Context context, Notification notification) {
         // Construct a task stack.
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
 
@@ -78,7 +78,10 @@ public class PGVApi {
                 stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
         // Get a notification builder that's compatible with platform versions >= 4
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+        NotificationCompat.Builder builder = new NotificationCompat
+                .Builder(context)
+                .setSmallIcon(notification.getSmallIcon())
+                .setLargeIcon(notification.getLargeIcon());
 //                .setSmallIcon(R.drawable.ic_action_location);
 
         // Define the notification settings.
@@ -98,7 +101,7 @@ public class PGVApi {
     }
 
 
-    public static void sendPost(final Context context, final String path, final String data) {
+    public static void sendPost(final Context context, final String path, final String data,final Notification notification) {
 
         StringBuilder stringBuilder = new StringBuilder();
         Thread thread = new Thread(new Runnable() {
@@ -147,7 +150,7 @@ public class PGVApi {
 
                     conn.disconnect();
 
-                    sendNotification(context, /*requestReturn.data.getString("title")*/ "Teste Notificacao", ret.data.getString("message"));
+                    sendNotification(context, /*requestReturn.data.getString("title")*/ "Teste Notificacao", ret.data.getString("message"), notification);
 //                return ret;
                 } catch (Exception e) {
                     Log.e(TAG, "******** PGVGEOFENCE POST EXCEPTION ERROR: " + e.getMessage());
