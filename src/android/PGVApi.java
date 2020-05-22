@@ -61,7 +61,7 @@ public class PGVApi {
                     Log.d(TAG, "******** PGVGEOFENCE WRITE JSON: " + data);
                     DataOutputStream os = new DataOutputStream(conn.getOutputStream());
                     //os.writeBytes(URLEncoder.encode(jsonParam.toString(), "UTF-8"));
-                    os.writeBytes(data);
+                    os.writeBytes(data.getBytes("UTF-8"));
 
                     os.flush();
                     os.close();
