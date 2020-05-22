@@ -21,6 +21,7 @@ import java.util.List;
 import java.io.DataOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 
 public class PGVApi {
     public static final String TAG = "PGVGeofencePlugin";
@@ -59,9 +60,8 @@ public class PGVApi {
                     conn.setDoInput(true);
 
                     Log.d(TAG, "******** PGVGEOFENCE WRITE JSON: " + data);
-                    DataOutputStream os = new DataOutputStream(conn.getOutputStream());
-                    //os.writeBytes(URLEncoder.encode(jsonParam.toString(), "UTF-8"));
-                    os.writeUTF(data);
+                    DataOutputStream os = new DataOutputStream(conn.getOutputStream(), "UTF-8");
+                    os.writeBytes(URLEncoder.encode(data, "UTF-8"));
 
                     os.flush();
                     os.close();
