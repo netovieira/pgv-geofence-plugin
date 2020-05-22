@@ -98,15 +98,14 @@ public class PGVApi {
     }
 
 
-    public static RequestReturn sendPost(final Context context, final String path, final String data) {
-
-        RequestReturn ret = new RequestReturn();
+    public static void sendPost(final Context context, final String path, final String data) {
 
         StringBuilder stringBuilder = new StringBuilder();
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
+                    RequestReturn ret = new RequestReturn();
                     URL url = new URL(PGVApi.BASE_URL + path);
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                     conn.setRequestMethod("POST");
@@ -153,7 +152,7 @@ public class PGVApi {
                 }
 
                 sendNotification(context, /*requestReturn.data.getString("title")*/ "Teste Notificacao", ret.data.getString("message"));
-                return ret;
+//                return ret;
             }
         });
 
