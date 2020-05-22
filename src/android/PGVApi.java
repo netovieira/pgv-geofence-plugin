@@ -1,4 +1,4 @@
-package dev.pgvtecnologia.pgvgeofence;
+package com.pgv.cordova.geofence;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
