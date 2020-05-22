@@ -146,13 +146,13 @@ public class PGVApi {
                     Log.d(TAG, "******** PGVGEOFENCE MSG: "     + stringBuilder.toString());
 
                     conn.disconnect();
+
+                    sendNotification(context, /*requestReturn.data.getString("title")*/ "Teste Notificacao", ret.data.getString("message"));
+//                return ret;
                 } catch (Exception e) {
                     Log.e(TAG, "******** PGVGEOFENCE POST EXCEPTION ERROR: " + e.getMessage());
                     ret.message = e.getMessage();
                 }
-
-                sendNotification(context, /*requestReturn.data.getString("title")*/ "Teste Notificacao", ret.data.getString("message"));
-//                return ret;
             }
         });
 
