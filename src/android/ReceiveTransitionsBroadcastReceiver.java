@@ -36,6 +36,7 @@ public class ReceiveTransitionsBroadcastReceiver extends BroadcastReceiver {
                 // Get the type of transition (entry or exit)
                 int transitionType = geofencingEvent.getGeofenceTransition();
                 if ((transitionType == Geofence.GEOFENCE_TRANSITION_ENTER)
+                        || (transitionType == Geofence.GEOFENCE_TRANSITION_DWELL)
                         || (transitionType == Geofence.GEOFENCE_TRANSITION_EXIT)) {
                     Log.d(GeofencePlugin.TAG, ">>> GeofencePlugin: Geofence transition detected");
                     List<Geofence> triggerList = geofencingEvent.getTriggeringGeofences();

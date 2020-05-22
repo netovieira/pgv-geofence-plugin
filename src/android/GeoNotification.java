@@ -18,9 +18,13 @@ public class GeoNotification {
     public Geofence toGeofence() {
         return new Geofence.Builder()
             .setRequestId(id)
-            .setTransitionTypes(transitionType)
             .setCircularRegion(latitude, longitude, radius)
-            .setExpirationDuration(Long.MAX_VALUE).build();
+            .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER
+                    | Geofence.GEOFENCE_TRANSITION_DWELL
+                    | Geofence.GEOFENCE_TRANSITION_EXIT
+            )
+            .setLoiteringDelay(1)
+            .setExpirationDuration(Geofence.NEVER_EXPIRE).build();
     }
 
     public String toJson() {
