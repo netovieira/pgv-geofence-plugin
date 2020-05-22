@@ -67,16 +67,18 @@ public class PGVApi {
         // Construct a task stack.
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
 
+        Intent resultIntent = context.getPackageManager()
+                .getLaunchIntentForPackage(packageName);
+
         // Push the content Intent onto the stack.
-        stackBuilder.addNextIntent(notificationIntent);
+        stackBuilder.addNextIntent(resultIntent);
 
         // Get a PendingIntent containing the entire back stack.
         PendingIntent notificationPendingIntent =
                 stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
         // Get a notification builder that's compatible with platform versions >= 4
-        NotificationCompat.Builder builder = new NotificationCompat
-                .Builder(context, "M_CH_ID");
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 //                .setSmallIcon(R.drawable.ic_action_location);
 
         // Define the notification settings.
