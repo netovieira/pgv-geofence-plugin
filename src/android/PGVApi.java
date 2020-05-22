@@ -35,7 +35,7 @@ public class PGVApi {
 
                 Log.d(TAG, "******** BEFORE Request on i-found-one!");
                 Log.d(TAG, "******** Notification DATA: " + obj.toString());
-                PGVApi.sendPost("i-found-one", geoNotification.toString());
+                PGVApi.sendPost("i-found-one", obj.toString());
             }catch (Exception e){
                 Log.d(TAG, "******** GeofencePlugin JSONObject catch error: " + e.getMessage());
             }
