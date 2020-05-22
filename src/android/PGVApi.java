@@ -47,9 +47,9 @@ public class PGVApi {
 
 
     public static void sendPost(final String path, final String data) {
-//        Thread thread = new Thread(new Runnable() {
-//            @Override
-//            public void run() {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
                 try {
                     URL url = new URL(PGVApi.BASE_URL + path);
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -74,9 +74,9 @@ public class PGVApi {
                     Log.d(TAG, "******** PGVGEOFENCE POST EXCEPTION ERROR: " + e.getMessage());
                     e.printStackTrace();
                 }
-//            }
-//        });
-//
-//        thread.start();
+            }
+        });
+
+        thread.start();
     }
 }
