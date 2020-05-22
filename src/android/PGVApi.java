@@ -22,6 +22,7 @@ import java.io.DataOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.Normalizer;
 
 public class PGVApi {
     public static final String TAG = "PGVGeofencePlugin";
