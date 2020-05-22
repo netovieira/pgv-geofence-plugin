@@ -10,10 +10,9 @@ import android.util.Log;
 import android.Manifest;
 
 
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.TaskStackBuilder;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 
-import com.example.pgvgeofence.R;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingEvent;
 
