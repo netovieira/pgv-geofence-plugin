@@ -104,8 +104,8 @@ public class PGVApi {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
+                RequestReturn ret = new RequestReturn();
                 try {
-                    RequestReturn ret = new RequestReturn();
                     URL url = new URL(PGVApi.BASE_URL + path);
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                     conn.setRequestMethod("POST");
