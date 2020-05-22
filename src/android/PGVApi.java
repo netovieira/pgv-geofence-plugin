@@ -67,6 +67,7 @@ public class PGVApi {
         // Construct a task stack.
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
 
+        String packageName = context.getPackageName();
         Intent resultIntent = context.getPackageManager()
                 .getLaunchIntentForPackage(packageName);
 
@@ -124,10 +125,11 @@ public class PGVApi {
 
             ret.status_code = conn.getResponseCode();
 
+            InputStream in;
             if(ret.status_code == 200) {
-                InputStream in = new BufferedInputStream(conn.getInputStream());
+                in = new BufferedInputStream(conn.getInputStream());
             }else{
-                InputStream in = new BufferedInputStream(conn.getErrorStream());
+                in = new BufferedInputStream(conn.getErrorStream());
             }
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
