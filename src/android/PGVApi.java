@@ -61,7 +61,7 @@ public class PGVApi {
 
                     Log.d(TAG, "******** PGVGEOFENCE WRITE JSON: " + data);
                     DataOutputStream os = new DataOutputStream(conn.getOutputStream());
-                    os.writeBytes(URLEncoder.encode(data, "UTF-8"));
+                    os.writeBytes(removerAcentos(data));
 
                     os.flush();
                     os.close();
@@ -78,5 +78,9 @@ public class PGVApi {
         });
 
         thread.start();
+    }
+
+    public static String removerAcentos(String str) {
+        return Normalizer.normalize(str, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
     }
 }
