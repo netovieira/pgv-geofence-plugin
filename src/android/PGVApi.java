@@ -64,14 +64,8 @@ public class PGVApi {
     }
 
     private static void sendNotification(Context context, String title, String message) {
-        // Create an explicit content Intent that starts the main Activity.
-        Intent notificationIntent = new Intent(context, MainActivity.class);
-
         // Construct a task stack.
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-
-        // Add the main Activity to the task stack as the parent.
-        stackBuilder.addParentStack(MainActivity.class);
 
         // Push the content Intent onto the stack.
         stackBuilder.addNextIntent(notificationIntent);
