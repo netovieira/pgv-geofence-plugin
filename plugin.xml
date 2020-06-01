@@ -66,6 +66,10 @@
         </config-file>
 
         <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <service android:name="com.pgv.cordova.geofence.PGVFirebaseMessagingService" />
+        </config-file>
+
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
             <meta-data android:name="com.google.android.geo.API_KEY"
                 android:value="AIzaSyCnXhxt6PtjFhmrBCu677fAML-6PV5wv78" />
         </config-file>
