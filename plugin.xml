@@ -27,7 +27,7 @@
         <source-file src="src/android/AddGeofenceCommand.java" target-dir="src/com/pgv/cordova/geofence" />
         <source-file src="src/android/AssetUtil.java" target-dir="src/com/pgv/cordova/geofence" />
         <source-file src="src/android/BeepHelper.java" target-dir="src/com/pgv/cordova/geofence" />
-        <source-file src="src/android/BootReceiver.java" target-dir="src/com/pgv/cordova/geofence" />
+<!--        <source-file src="src/android/BootReceiver.java" target-dir="src/com/pgv/cordova/geofence" />-->
         <source-file src="src/android/CommandExecutionHandler.java" target-dir="src/com/pgv/cordova/geofence" />
         <source-file src="src/android/GeoNotification.java" target-dir="src/com/pgv/cordova/geofence" />
         <source-file src="src/android/GeoNotificationManager.java" target-dir="src/com/pgv/cordova/geofence" />
@@ -54,20 +54,20 @@
         </config-file>
 
         <config-file target="AndroidManifest.xml" parent="/manifest/application">
-            <receiver android:name="com.pgv.cordova.geofence.ReceiveTransitionsBroadcastReceiver" />
+                <receiver android:name="com.pgv.cordova.geofence.ReceiveTransitionsBroadcastReceiver" android:enabled="true" android:exported="true" />
         </config-file>
 
-        <config-file target="AndroidManifest.xml" parent="/manifest/application">
-            <receiver android:name="com.pgv.cordova.geofence.BootReceiver">
-                <intent-filter>
-                    <action android:name="android.intent.action.BOOT_COMPLETED" />
-                </intent-filter>
-            </receiver>
-        </config-file>
+<!--        <config-file target="AndroidManifest.xml" parent="/manifest/application">-->
+<!--            <receiver android:name="com.pgv.cordova.geofence.BootReceiver">-->
+<!--                <intent-filter>-->
+<!--                    <action android:name="android.intent.action.BOOT_COMPLETED" />-->
+<!--                </intent-filter>-->
+<!--            </receiver>-->
+<!--        </config-file>-->
 
-        <config-file target="AndroidManifest.xml" parent="/manifest/application">
-            <service android:name="com.pgv.cordova.geofence.PGVFirebaseMessagingService" />
-        </config-file>
+<!--        <config-file target="AndroidManifest.xml" parent="/manifest/application">-->
+<!--            <service android:name="com.pgv.cordova.geofence.PGVFirebaseMessagingService" />-->
+<!--        </config-file>-->
 
         <config-file target="AndroidManifest.xml" parent="/manifest/application">
             <meta-data android:name="com.google.android.geo.API_KEY"
@@ -79,8 +79,8 @@
             <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
             <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
             <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
-            <uses-permission android:name="android.permission.INTERNET" />
-            <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+<!--            <uses-permission android:name="android.permission.INTERNET" />-->
+<!--            <uses-permission android:name="android.permission.READ_PHONE_STATE" />-->
         </config-file>
 
     </platform>

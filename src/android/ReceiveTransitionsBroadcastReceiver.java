@@ -53,7 +53,6 @@ public class ReceiveTransitionsBroadcastReceiver extends BroadcastReceiver {
                     if (geoNotifications.size() > 0) {
                         Log.d(GeofencePlugin.TAG, "******** GeofencePlugin onTransitionReceived called");
                         GeofencePlugin.onTransitionReceived(context, geoNotifications);
-//                            GeofencePlugin.onTransitionReceived(this, geoNotifications, latitude, longitude);
                     }
                 } else {
                     String error = "Geofence transition error: " + transitionType;
