@@ -68,6 +68,7 @@ public class PGVApi {
         final String path = "i-found-one";
         Random r = new Random();
         final int interaction = r.nextInt(999);
+        PGVApi.inRequest(context);
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -129,12 +130,14 @@ public class PGVApi {
                     }
                 } catch (Exception e) {
                     Log.d(TAG, "******** iFoundOneRequest:"+ Integer.toString(interaction) +" PGVGEOFENCE POST EXCEPTION ERROR: " + e.getMessage());
-                    e.printStackTrace();
                 }
+                PGVApi.closeRequest(context);
             }
         });
 
-        thread.start();
+        if(!PGVApi.activeRequest(context)) {
+            thread.start();
+        }
     }
 
     public static String removerAcentos(String str) {
@@ -196,5 +199,27 @@ public class PGVApi {
             }
         }
         return sb.toString();
+    }
+
+    public static void inRequest(Context context){
+        File file = new File(context.getFilesDir() + File.pathSeparator + "in_request.txt");
+        try {
+            FileWriter fileWriter = new FileWriter(file);
+            fileWriter.write("1");
+            fileWriter.flush();
+            fileWriter.close();
+        } catch (IOException e) {
+            Log.d(TAG, "******** PGVGEOFENCE saveUserInfo IOException: " + e.getMessage());
+        }
+    }
+
+    public static void closeRequest(Context context){
+        File file = new File(context.getFilesDir() + File.pathSeparator + "in_request.txt");
+        file.delete();
+    }
+
+    public static Boolean activeRequest(Context context){
+        File file = new File(context.getFilesDir() + File.pathSeparator + "in_request.txt");
+        return file.exists();
     }
 }
