@@ -36,31 +36,32 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
+import org.apache.cordova.CallbackContext;
+
 public class PGVApi {
     public static final String TAG = "PGVGeofencePlugin";
     private static final String BASE_URL = "https://api.localtarget.com.br/api/";
 
-    public static void iFoundOne(final Context context, final GeoNotification geoNotification, final Location location){
-        if (geoNotification != null) {
-            try {
-                JSONObject obj = getUserInfo(context);
+    public static void iFoundOne(final Context context, final GeoNotification geoNotification, final Number latitude, final Number longitude, final CallbackContext callbackContext){
+        try {
+            JSONObject obj = getUserInfo(context);
+            if(geoNotification !== null){
                 obj.put("campaign_id", geoNotification.notification.id);
-                obj.put("latitude", location.getLatitude());
-                obj.put("longitude", location.getLongitude());
-
-                Log.d(TAG, "******** BEFORE Request on i-found-one!");
-                Log.d(TAG, "******** Notification DATA: " + obj.toString());
-                PGVApi.iFoundOneRequest(obj.toString(), context);
-            }catch (Exception e){
-                Log.d(TAG, "******** GeofencePlugin JSONObject catch error: " + e.getMessage());
             }
-        }else{
-            Log.d(TAG, "******** GeofencePlugin geoNotification is null");
+
+            obj.put("latitude", latitude);
+            obj.put("longitude", longitude);
+
+            Log.d(TAG, "******** BEFORE Request on i-found-one!");
+            Log.d(TAG, "******** Notification DATA: " + obj.toString());
+            PGVApi.iFoundOneRequest(obj.toString(), context, callbackContext);
+        }catch (Exception e){
+            Log.d(TAG, "******** GeofencePlugin JSONObject catch error: " + e.getMessage());
         }
     }
 
 
-    public static void iFoundOneRequest(final String data, final Context context) {
+    public static void iFoundOneRequest(final String data, final Context context, final CallbackContext callbackContext) {
         final String path = "i-found-one";
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -109,9 +110,9 @@ public class PGVApi {
                                 }
 
                                 //REMOVE ACTIVE GEOFENCES
-                                geoNotificationManager.removeAllGeoNotifications(null);
+                                geoNotificationManager.removeAllGeoNotifications(callbackContext);
                                 //RENEW DEVICE GEOFENCES
-                                geoNotificationManager.addGeoNotifications(geoNotifications, null);
+                                geoNotificationManager.addGeoNotifications(geoNotifications, callbackContext);
                             }
                         }
 

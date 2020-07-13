@@ -64,6 +64,7 @@ public class GeofencePlugin extends CordovaPlugin {
     @Override
     public boolean execute(final String action, final JSONArray args,
                            final CallbackContext callbackContext) throws JSONException {
+
         Log.d(TAG, "GeofencePlugin execute action: " + action + " args: " + args.toString());
         executedAction = new Action(action, args, callbackContext);
 
@@ -127,8 +128,7 @@ public class GeofencePlugin extends CordovaPlugin {
 
     private void initialize(JSONObject userInfo, CallbackContext callbackContext) {
         PGVApi.saveUserInfo(this.context, userInfo);
-        geoNotificationManager.removeAllGeoNotifications(callbackContext);
-        callbackContext.success();
+        PGVApi.iFoundOne(this.context, null, userInfo.getDouble('latitude'), userInfo.getDouble('longitude'), callbackContext);
     }
 
     private boolean hasPermissions(String[] permissions) {

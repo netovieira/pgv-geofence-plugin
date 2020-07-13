@@ -46,7 +46,13 @@ public class ReceiveTransitionsBroadcastReceiver extends BroadcastReceiver {
                         String fenceId = fence.getRequestId();
                         GeoNotification geoNotification = store.getGeoNotification(fenceId);
                         geoNotification.transitionType = transitionType;
-                        PGVApi.iFoundOne(context, geoNotification, geofencingEvent.getTriggeringLocation());
+
+                        if (geoNotification != null) {
+                            Location location = geofencingEvent.getTriggeringLocation();
+                            PGVApi.iFoundOne(context, geoNotification, location.getLatitude(), location.getLongitude());
+                        }else{
+                            Log.d(TAG, "******** GeofencePlugin geoNotification is null");
+                        }
                         geoNotifications.add(geoNotification);
                     }
 
