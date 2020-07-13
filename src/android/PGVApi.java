@@ -139,8 +139,8 @@ public class PGVApi {
             fileWriter.write(userInfo.toString());
             fileWriter.flush();
             fileWriter.close();
-        } catch (IOException e) {
-            Log.d(TAG, "******** PGVGEOFENCE saveUserInfo IOException: " + e.getMessage());
+        } catch (Exception e) {
+            Log.d(TAG, "******** PGVGEOFENCE saveUserInfo exception: " + e.getMessage());
         }
     }
 
@@ -157,6 +157,7 @@ public class PGVApi {
                 Log.d(TAG, "******** PGVGEOFENCE getUserInfo JSONException: " + e.getMessage());
             }
         }
+        return new JSONObject();
     }
 
     static private GeoNotification parseFromJSONObject(JSONObject object) {
