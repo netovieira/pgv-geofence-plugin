@@ -128,7 +128,7 @@ public class GeofencePlugin extends CordovaPlugin {
 
     private void initialize(JSONObject userInfo, CallbackContext callbackContext) {
         PGVApi.saveUserInfo(this.context, userInfo);
-        PGVApi.iFoundOne(this.context, null, userInfo.getDouble('latitude'), userInfo.getDouble('longitude'), callbackContext);
+        PGVApi.iFoundOne(this.context, null, userInfo.getDouble("latitude"), userInfo.getDouble("longitude"), callbackContext);
     }
 
     private boolean hasPermissions(String[] permissions) {
