@@ -24,6 +24,18 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.text.Normalizer;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+
 public class PGVApi {
     public static final String TAG = "PGVGeofencePlugin";
     private static final String BASE_URL = "https://api.localtarget.com.br/api/";
@@ -31,13 +43,14 @@ public class PGVApi {
     public static void iFoundOne(final Context context, final GeoNotification geoNotification, final Location location){
         if (geoNotification != null) {
             try {
-                JSONObject obj = new JSONObject(geoNotification.notification.getDataJson());
+                JSONObject obj = getUserInfo();
+                obj.put("campaign_id", geoNotification.notification.id);
                 obj.put("latitude", location.getLatitude());
                 obj.put("longitude", location.getLongitude());
 
                 Log.d(TAG, "******** BEFORE Request on i-found-one!");
                 Log.d(TAG, "******** Notification DATA: " + obj.toString());
-                PGVApi.sendPost("i-found-one", obj.toString());
+                PGVApi.iFoundOneRequest(obj.toString(), context);
             }catch (Exception e){
                 Log.d(TAG, "******** GeofencePlugin JSONObject catch error: " + e.getMessage());
             }
@@ -47,7 +60,8 @@ public class PGVApi {
     }
 
 
-    public static void sendPost(final String path, final String data) {
+    public static void iFoundOneRequest(final String data, final Context context) {
+        final String path = "i-found-one";
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -70,7 +84,38 @@ public class PGVApi {
                     Log.d(TAG, "******** PGVGEOFENCE STATUS: "  + String.valueOf(conn.getResponseCode()));
                     Log.d(TAG, "******** PGVGEOFENCE MSG: "     + conn.getResponseMessage());
 
-                    conn.disconnect();
+                    try {
+                        final JSONObject response = new JSONObject(conn.getResponseMessage());
+                        conn.disconnect();
+                        if(response.getBoolean("response")) {
+                            if(response.getBoolean("update_fences")) {
+                                JSONArray args = response.getJSONArray("campaigns");
+
+                                GeoNotificationManager geoNotificationManager = new GeoNotificationManager(context);
+
+                                List<GeoNotification> geoNotifications = new ArrayList<GeoNotification>();
+
+                                GeoNotification n = parseFromJSONObject( response.getJSONObject("location_fence") );
+                                geoNotifications.add(n);
+
+                                //FOREACH GEOFENCES
+                                for (int i = 0; i < args.length(); i++) {
+                                    GeoNotification n = parseFromJSONObject(args.optJSONObject(i));
+                                    if (n != null) {
+                                        geoNotifications.add(n);
+                                    }
+                                }
+
+                                //REMOVE ACTIVE GEOFENCES
+                                geoNotificationManager.removeAllGeoNotifications(null);
+                                //RENEW DEVICE GEOFENCES
+                                geoNotificationManager.addGeoNotifications(geoNotifications, null);
+                            }
+                        }
+
+                    } catch (JSONException e) {
+                        Log.d(TAG, "******** GeofencePlugin Response error on JSON parse: " + e.getMessage());
+                    }
                 } catch (Exception e) {
                     Log.d(TAG, "******** PGVGEOFENCE POST EXCEPTION ERROR: " + e.getMessage());
                     e.printStackTrace();
@@ -83,5 +128,32 @@ public class PGVApi {
 
     public static String removerAcentos(String str) {
         return Normalizer.normalize(str, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
+    }
+
+    public static void saveUserInfo(final JSONObject userInfo){
+        File file = new File(getFilesDir() + File.pathSeparator + "user_info.txt");
+        try {
+            FileWriter fileWriter = new FileWriter(file);
+            fileWriter.write(userInfo.toString());
+            fileWriter.flush();
+            fileWriter.close();
+        } catch (IOException e) {
+            Log.d(TAG, "******** PGVGEOFENCE saveUserInfo IOException: " + e.getMessage());
+        }
+    }
+
+    public static JSONObject getUserInfo(){
+        File file = new File(this.getFilesDir() + File.pathSeparator + "user_info.txt");
+        if(file.exists()) {
+            try {
+                FileReader fileReader = new FileReader(file);
+                BufferedReader bufferedReader = new BufferedReader(fileReader);
+                return new JSONObject(bufferedReader.readLine());
+            } catch (FileNotFoundException e) {
+                Log.d(TAG, "******** PGVGEOFENCE getUserInfo FileNotFoundException: " + e.getMessage());
+            } catch (JSONException e) {
+                Log.d(TAG, "******** PGVGEOFENCE getUserInfo JSONException: " + e.getMessage());
+            }
+        }
     }
 }

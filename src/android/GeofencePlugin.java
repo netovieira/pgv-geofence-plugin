@@ -90,7 +90,7 @@ public class GeofencePlugin extends CordovaPlugin {
                     List<GeoNotification> geoNotifications = geoNotificationManager.getWatched();
                     callbackContext.success(Gson.get().toJson(geoNotifications));
                 } else if (action.equals("initialize")) {
-                    initialize(callbackContext);
+                    initialize(args.optJSONObject(0), callbackContext);
                 } else if (action.equals("deviceReady")) {
                     deviceReady();
                 }
@@ -125,7 +125,8 @@ public class GeofencePlugin extends CordovaPlugin {
         String data = intent.getStringExtra("geofence.notification.data");
     }
 
-    private void initialize(CallbackContext callbackContext) {
+    private void initialize(JSONObject userInfo, CallbackContext callbackContext) {
+        PGVApi.saveUserInfo(userInfo);
         geoNotificationManager.removeAllGeoNotifications(callbackContext);
         callbackContext.success();
     }

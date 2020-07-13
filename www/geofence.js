@@ -34,8 +34,8 @@ module.exports = {
      *
      * @return {Promise}
      */
-    initialize: function (success, error) {
-        return execPromise(success, error, "GeofencePlugin", "initialize", []);
+    initialize: function (userInfo, success, error) {
+        return execPromise(success, error, "GeofencePlugin", "initialize", [userInfo]);
     },
     /**
      * Adding new geofence to monitor.
