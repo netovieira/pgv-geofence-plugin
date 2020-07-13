@@ -143,7 +143,7 @@ public class PGVApi {
     }
 
     public static JSONObject getUserInfo(){
-        File file = new File(this.getFilesDir() + File.pathSeparator + "user_info.txt");
+        File file = new File(getFilesDir() + File.pathSeparator + "user_info.txt");
         if(file.exists()) {
             try {
                 FileReader fileReader = new FileReader(file);
