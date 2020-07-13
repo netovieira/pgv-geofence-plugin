@@ -158,4 +158,9 @@ public class PGVApi {
             }
         }
     }
+
+    private GeoNotification parseFromJSONObject(JSONObject object) {
+        GeoNotification geo = GeoNotification.fromJson(object.toString());
+        return geo;
+    }
 }
