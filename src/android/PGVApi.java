@@ -89,8 +89,8 @@ public class PGVApi {
                     Log.d(TAG, "******** PGVGEOFENCE MSG: "     + conn.getResponseMessage());
 
                     try {
-                        InputStream response = conn.getInputStream();
-                        String stringJson = convertStreamToString(response);
+                        InputStream inputStream = conn.getInputStream();
+                        String stringJson = convertStreamToString(inputStream);
                         Log.d(TAG, "******** PGVGEOFENCE JSON STRING: "     + stringJson);
                         final JSONObject response = new JSONObject(stringJson);
                         conn.disconnect();
