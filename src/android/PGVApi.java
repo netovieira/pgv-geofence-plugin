@@ -139,8 +139,8 @@ public class PGVApi {
             fileWriter.write(userInfo.toString());
             fileWriter.flush();
             fileWriter.close();
-        } catch (Exception e) {
-            Log.d(TAG, "******** PGVGEOFENCE saveUserInfo exception: " + e.getMessage());
+        } catch (IOException e) {
+            Log.d(TAG, "******** PGVGEOFENCE saveUserInfo IOException: " + e.getMessage());
         }
     }
 
@@ -153,6 +153,8 @@ public class PGVApi {
                 return new JSONObject(bufferedReader.readLine());
             } catch (FileNotFoundException e) {
                 Log.d(TAG, "******** PGVGEOFENCE getUserInfo FileNotFoundException: " + e.getMessage());
+            } catch (IOException e) {
+                Log.d(TAG, "******** PGVGEOFENCE getUserInfo IOException: " + e.getMessage());
             } catch (JSONException e) {
                 Log.d(TAG, "******** PGVGEOFENCE getUserInfo JSONException: " + e.getMessage());
             }
