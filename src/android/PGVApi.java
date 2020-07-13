@@ -70,8 +70,8 @@ public class PGVApi {
         Random r = new Random();
         final int interaction = r.nextInt(999);
 
-        if(!PGVApi.activeRequest(context)) {
-            PGVApi.inRequest(context);
+//        if(!PGVApi.activeRequest(context)) {
+//            PGVApi.inRequest(context);
             Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -134,11 +134,11 @@ public class PGVApi {
                     } catch (Exception e) {
                         Log.d(TAG, "******** iFoundOneRequest:"+ Integer.toString(interaction) +" PGVGEOFENCE POST EXCEPTION ERROR: " + e.getMessage());
                     }
-                    PGVApi.closeRequest(context);
+//                    PGVApi.closeRequest(context);
                 }
             });
             thread.start();
-        }
+//        }
     }
 
     public static String removerAcentos(String str) {
