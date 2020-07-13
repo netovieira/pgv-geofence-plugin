@@ -40,12 +40,10 @@ public class PGVApi {
     public static final String TAG = "PGVGeofencePlugin";
     private static final String BASE_URL = "https://api.localtarget.com.br/api/";
 
-    public static final Activity activity;
-
     public static void iFoundOne(final Context context, final GeoNotification geoNotification, final Location location){
         if (geoNotification != null) {
             try {
-                JSONObject obj = getUserInfo();
+                JSONObject obj = getUserInfo(context);
                 obj.put("campaign_id", geoNotification.notification.id);
                 obj.put("latitude", location.getLatitude());
                 obj.put("longitude", location.getLongitude());
@@ -132,8 +130,8 @@ public class PGVApi {
         return Normalizer.normalize(str, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
     }
 
-    public static void saveUserInfo(final JSONObject userInfo){
-        File file = new File(activity.getFilesDir() + File.pathSeparator + "user_info.txt");
+    public static void saveUserInfo(Context context, JSONObject userInfo){
+        File file = new File(context.getFilesDir() + File.pathSeparator + "user_info.txt");
         try {
             FileWriter fileWriter = new FileWriter(file);
             fileWriter.write(userInfo.toString());
@@ -144,8 +142,8 @@ public class PGVApi {
         }
     }
 
-    public static JSONObject getUserInfo(){
-        File file = new File(activity.getFilesDir() + File.pathSeparator + "user_info.txt");
+    public static JSONObject getUserInfo(Context context){
+        File file = new File(context.getFilesDir() + File.pathSeparator + "user_info.txt");
         if(file.exists()) {
             try {
                 FileReader fileReader = new FileReader(file);

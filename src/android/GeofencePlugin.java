@@ -126,8 +126,7 @@ public class GeofencePlugin extends CordovaPlugin {
     }
 
     private void initialize(JSONObject userInfo, CallbackContext callbackContext) {
-        PGVApi.activity = this.cordova.getActivity();
-        PGVApi.saveUserInfo(userInfo);
+        PGVApi.saveUserInfo(this.context, userInfo);
         geoNotificationManager.removeAllGeoNotifications(callbackContext);
         callbackContext.success();
     }
