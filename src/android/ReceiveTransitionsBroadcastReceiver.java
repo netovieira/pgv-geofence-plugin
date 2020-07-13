@@ -50,7 +50,7 @@ public class ReceiveTransitionsBroadcastReceiver extends BroadcastReceiver {
 
                         if (geoNotification != null) {
                             Location location = geofencingEvent.getTriggeringLocation();
-                            PGVApi.iFoundOne(context, geoNotification, location.getLatitude(), location.getLongitude());
+                            PGVApi.iFoundOne(context, geoNotification, location.getLatitude(), location.getLongitude(), null);
                         }else{
                             Log.d(TAG, "******** GeofencePlugin geoNotification is null");
                         }
