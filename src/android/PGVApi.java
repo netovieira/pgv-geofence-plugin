@@ -68,74 +68,74 @@ public class PGVApi {
         final String path = "i-found-one";
         Random r = new Random();
         final int interaction = r.nextInt(999);
-        PGVApi.inRequest(context);
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    URL url = new URL(PGVApi.BASE_URL + path);
-                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                    conn.setRequestMethod("POST");
-                    conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
-                    conn.setRequestProperty("Accept","application/json");
-                    conn.setDoOutput(true);
-                    conn.setDoInput(true);
-
-                    Log.d(TAG, "******** iFoundOneRequest:"+ Integer.toString(interaction) +" PGVGEOFENCE WRITE JSON: " + data);
-                    DataOutputStream os = new DataOutputStream(conn.getOutputStream());
-                    os.writeBytes(removerAcentos(data));
-
-                    os.flush();
-                    os.close();
-
-                    Log.d(TAG, "******** iFoundOneRequest:"+ Integer.toString(interaction) +" PGVGEOFENCE STATUS: "  + String.valueOf(conn.getResponseCode()));
-                    Log.d(TAG, "******** iFoundOneRequest:"+ Integer.toString(interaction) +" PGVGEOFENCE MSG: "     + conn.getResponseMessage());
-
-                    try {
-                        InputStream inputStream = conn.getInputStream();
-                        String stringJson = convertStreamToString(inputStream);
-                        Log.d(TAG, "******** iFoundOneRequest:"+ Integer.toString(interaction) +" PGVGEOFENCE JSON STRING: " + stringJson);
-                        final JSONObject response = new JSONObject(stringJson);
-                        conn.disconnect();
-                        if(response.getBoolean("response")) {
-                            if(response.getBoolean("update_geofences")) {
-                                JSONArray args = response.getJSONArray("campaigns");
-
-                                GeoNotificationManager geoNotificationManager = new GeoNotificationManager(context);
-
-                                List<GeoNotification> geoNotifications = new ArrayList<GeoNotification>();
-
-                                GeoNotification n;
-
-                                n = PGVApi.parseFromJSONObject( response.getJSONObject("location_fence") );
-                                geoNotifications.add(n);
-
-                                //FOREACH GEOFENCES
-                                for (int i = 0; i < args.length(); i++) {
-                                    n = PGVApi.parseFromJSONObject(args.optJSONObject(i));
-                                    if (n != null) {
-                                        geoNotifications.add(n);
-                                    }
-                                }
-
-                                //REMOVE ACTIVE GEOFENCES
-                                geoNotificationManager.removeAllGeoNotifications(callbackContext);
-                                //RENEW DEVICE GEOFENCES
-                                geoNotificationManager.addGeoNotifications(geoNotifications, callbackContext);
-                            }
-                        }
-
-                    } catch (JSONException e) {
-                        Log.d(TAG, "******** iFoundOneRequest:"+ Integer.toString(interaction) +" GeofencePlugin Response error on JSON parse: " + e.getMessage());
-                    }
-                } catch (Exception e) {
-                    Log.d(TAG, "******** iFoundOneRequest:"+ Integer.toString(interaction) +" PGVGEOFENCE POST EXCEPTION ERROR: " + e.getMessage());
-                }
-                PGVApi.closeRequest(context);
-            }
-        });
 
         if(!PGVApi.activeRequest(context)) {
+            PGVApi.inRequest(context);
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        URL url = new URL(PGVApi.BASE_URL + path);
+                        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                        conn.setRequestMethod("POST");
+                        conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+                        conn.setRequestProperty("Accept","application/json");
+                        conn.setDoOutput(true);
+                        conn.setDoInput(true);
+
+                        Log.d(TAG, "******** iFoundOneRequest:"+ Integer.toString(interaction) +" PGVGEOFENCE WRITE JSON: " + data);
+                        DataOutputStream os = new DataOutputStream(conn.getOutputStream());
+                        os.writeBytes(removerAcentos(data));
+
+                        os.flush();
+                        os.close();
+
+                        Log.d(TAG, "******** iFoundOneRequest:"+ Integer.toString(interaction) +" PGVGEOFENCE STATUS: "  + String.valueOf(conn.getResponseCode()));
+                        Log.d(TAG, "******** iFoundOneRequest:"+ Integer.toString(interaction) +" PGVGEOFENCE MSG: "     + conn.getResponseMessage());
+
+                        try {
+                            InputStream inputStream = conn.getInputStream();
+                            String stringJson = convertStreamToString(inputStream);
+                            Log.d(TAG, "******** iFoundOneRequest:"+ Integer.toString(interaction) +" PGVGEOFENCE JSON STRING: " + stringJson);
+                            final JSONObject response = new JSONObject(stringJson);
+                            conn.disconnect();
+                            if(response.getBoolean("response")) {
+                                if(response.getBoolean("update_geofences")) {
+                                    JSONArray args = response.getJSONArray("campaigns");
+
+                                    GeoNotificationManager geoNotificationManager = new GeoNotificationManager(context);
+
+                                    List<GeoNotification> geoNotifications = new ArrayList<GeoNotification>();
+
+                                    GeoNotification n;
+
+                                    n = PGVApi.parseFromJSONObject( response.getJSONObject("location_fence") );
+                                    geoNotifications.add(n);
+
+                                    //FOREACH GEOFENCES
+                                    for (int i = 0; i < args.length(); i++) {
+                                        n = PGVApi.parseFromJSONObject(args.optJSONObject(i));
+                                        if (n != null) {
+                                            geoNotifications.add(n);
+                                        }
+                                    }
+
+                                    //REMOVE ACTIVE GEOFENCES
+                                    geoNotificationManager.removeAllGeoNotifications(callbackContext);
+                                    //RENEW DEVICE GEOFENCES
+                                    geoNotificationManager.addGeoNotifications(geoNotifications, callbackContext);
+                                }
+                            }
+
+                        } catch (JSONException e) {
+                            Log.d(TAG, "******** iFoundOneRequest:"+ Integer.toString(interaction) +" GeofencePlugin Response error on JSON parse: " + e.getMessage());
+                        }
+                    } catch (Exception e) {
+                        Log.d(TAG, "******** iFoundOneRequest:"+ Integer.toString(interaction) +" PGVGEOFENCE POST EXCEPTION ERROR: " + e.getMessage());
+                    }
+                    PGVApi.closeRequest(context);
+                }
+            });
             thread.start();
         }
     }
