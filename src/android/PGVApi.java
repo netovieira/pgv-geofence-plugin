@@ -97,12 +97,12 @@ public class PGVApi {
 
                                 List<GeoNotification> geoNotifications = new ArrayList<GeoNotification>();
 
-                                GeoNotification n = parseFromJSONObject( response.getJSONObject("location_fence") );
+                                GeoNotification n = PGVApi.parseFromJSONObject( response.getJSONObject("location_fence") );
                                 geoNotifications.add(n);
 
                                 //FOREACH GEOFENCES
                                 for (int i = 0; i < args.length(); i++) {
-                                    GeoNotification n = parseFromJSONObject(args.optJSONObject(i));
+                                    GeoNotification n = PGVApi.parseFromJSONObject(args.optJSONObject(i));
                                     if (n != null) {
                                         geoNotifications.add(n);
                                     }
@@ -159,7 +159,7 @@ public class PGVApi {
         }
     }
 
-    private GeoNotification parseFromJSONObject(JSONObject object) {
+    static private GeoNotification parseFromJSONObject(JSONObject object) {
         GeoNotification geo = GeoNotification.fromJson(object.toString());
         return geo;
     }
