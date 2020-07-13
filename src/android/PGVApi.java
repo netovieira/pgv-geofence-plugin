@@ -40,6 +40,8 @@ public class PGVApi {
     public static final String TAG = "PGVGeofencePlugin";
     private static final String BASE_URL = "https://api.localtarget.com.br/api/";
 
+    public static final Activity activity;
+
     public static void iFoundOne(final Context context, final GeoNotification geoNotification, final Location location){
         if (geoNotification != null) {
             try {
@@ -131,7 +133,7 @@ public class PGVApi {
     }
 
     public static void saveUserInfo(final JSONObject userInfo){
-        File file = new File(getFilesDir() + File.pathSeparator + "user_info.txt");
+        File file = new File(activity.getFilesDir() + File.pathSeparator + "user_info.txt");
         try {
             FileWriter fileWriter = new FileWriter(file);
             fileWriter.write(userInfo.toString());
@@ -143,7 +145,7 @@ public class PGVApi {
     }
 
     public static JSONObject getUserInfo(){
-        File file = new File(getFilesDir() + File.pathSeparator + "user_info.txt");
+        File file = new File(activity.getFilesDir() + File.pathSeparator + "user_info.txt");
         if(file.exists()) {
             try {
                 FileReader fileReader = new FileReader(file);
