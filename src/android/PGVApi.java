@@ -45,7 +45,7 @@ public class PGVApi {
     public static void iFoundOne(final Context context, final GeoNotification geoNotification, final Number latitude, final Number longitude, final CallbackContext callbackContext){
         try {
             JSONObject obj = getUserInfo(context);
-            if(geoNotification !== null){
+            if(geoNotification != null){
                 obj.put("campaign_id", geoNotification.notification.id);
             }
 
