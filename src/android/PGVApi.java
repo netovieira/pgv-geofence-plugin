@@ -26,6 +26,8 @@ import java.text.Normalizer;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -87,7 +89,10 @@ public class PGVApi {
                     Log.d(TAG, "******** PGVGEOFENCE MSG: "     + conn.getResponseMessage());
 
                     try {
-                        final JSONObject response = new JSONObject(conn.getResponseMessage());
+                        InputStream response = conn.getInputStream();
+                        String stringJson = convertStreamToString(response);
+                        Log.d(TAG, "******** PGVGEOFENCE JSON STRING: "     + stringJson);
+                        final JSONObject response = new JSONObject(stringJson);
                         conn.disconnect();
                         if(response.getBoolean("response")) {
                             if(response.getBoolean("update_fences")) {
@@ -167,5 +172,27 @@ public class PGVApi {
     static private GeoNotification parseFromJSONObject(JSONObject object) {
         GeoNotification geo = GeoNotification.fromJson(object.toString());
         return geo;
+    }
+
+    private static String convertStreamToString(InputStream is) {
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        StringBuilder sb = new StringBuilder();
+
+        String line = null;
+        try {
+            while ((line = reader.readLine()) != null) {
+                sb.append(line + "\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                is.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return sb.toString();
     }
 }
