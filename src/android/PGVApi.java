@@ -66,6 +66,8 @@ public class PGVApi {
 
     public static void iFoundOneRequest(final String data, final Context context, final CallbackContext callbackContext) {
         final String path = "i-found-one";
+        Random r = new Random();
+        final int interaction = r.nextInt(999);
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -78,20 +80,20 @@ public class PGVApi {
                     conn.setDoOutput(true);
                     conn.setDoInput(true);
 
-                    Log.d(TAG, "******** PGVGEOFENCE WRITE JSON: " + data);
+                    Log.d(TAG, "******** iFoundOneRequest:"+ Integer.toString(interaction) +" PGVGEOFENCE WRITE JSON: " + data);
                     DataOutputStream os = new DataOutputStream(conn.getOutputStream());
                     os.writeBytes(removerAcentos(data));
 
                     os.flush();
                     os.close();
 
-                    Log.d(TAG, "******** PGVGEOFENCE STATUS: "  + String.valueOf(conn.getResponseCode()));
-                    Log.d(TAG, "******** PGVGEOFENCE MSG: "     + conn.getResponseMessage());
+                    Log.d(TAG, "******** iFoundOneRequest:"+ Integer.toString(interaction) +" PGVGEOFENCE STATUS: "  + String.valueOf(conn.getResponseCode()));
+                    Log.d(TAG, "******** iFoundOneRequest:"+ Integer.toString(interaction) +" PGVGEOFENCE MSG: "     + conn.getResponseMessage());
 
                     try {
                         InputStream inputStream = conn.getInputStream();
                         String stringJson = convertStreamToString(inputStream);
-                        Log.d(TAG, "******** PGVGEOFENCE JSON STRING: "     + stringJson);
+                        Log.d(TAG, "******** iFoundOneRequest:"+ Integer.toString(interaction) +" PGVGEOFENCE JSON STRING: " + stringJson);
                         final JSONObject response = new JSONObject(stringJson);
                         conn.disconnect();
                         if(response.getBoolean("response")) {
@@ -123,10 +125,10 @@ public class PGVApi {
                         }
 
                     } catch (JSONException e) {
-                        Log.d(TAG, "******** GeofencePlugin Response error on JSON parse: " + e.getMessage());
+                        Log.d(TAG, "******** iFoundOneRequest:"+ Integer.toString(interaction) +" GeofencePlugin Response error on JSON parse: " + e.getMessage());
                     }
                 } catch (Exception e) {
-                    Log.d(TAG, "******** PGVGEOFENCE POST EXCEPTION ERROR: " + e.getMessage());
+                    Log.d(TAG, "******** iFoundOneRequest:"+ Integer.toString(interaction) +" PGVGEOFENCE POST EXCEPTION ERROR: " + e.getMessage());
                     e.printStackTrace();
                 }
             }
