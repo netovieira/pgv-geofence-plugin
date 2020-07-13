@@ -20,6 +20,7 @@ import org.json.JSONObject;
 import android.location.Location;
 
 public class ReceiveTransitionsBroadcastReceiver extends BroadcastReceiver {
+    public static final String TAG = "PGVGeofencePlugin";
 
     @Override
     public void onReceive(Context context, Intent intent) {
