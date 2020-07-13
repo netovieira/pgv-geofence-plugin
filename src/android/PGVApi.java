@@ -95,7 +95,7 @@ public class PGVApi {
                         final JSONObject response = new JSONObject(stringJson);
                         conn.disconnect();
                         if(response.getBoolean("response")) {
-                            if(response.getBoolean("update_fences")) {
+                            if(response.getBoolean("update_geofences")) {
                                 JSONArray args = response.getJSONArray("campaigns");
 
                                 GeoNotificationManager geoNotificationManager = new GeoNotificationManager(context);
