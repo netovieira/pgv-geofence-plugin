@@ -43,7 +43,7 @@
         <source-file src="src/android/RemoveGeofenceCommand.java" target-dir="src/com/pgv/cordova/geofence" />
         <source-file src="src/android/PGVApi.java" target-dir="src/com/pgv/cordova/geofence" />
 
-        <framework src="com.google.android.gms:play-services-location:10.+" />
+        <framework src="com.google.android.gms:play-services-location:17.+" />
 <!--        <framework src="com.google.android.gms:play-services-location:+" />-->
         <lib-file src="src/android/libs/gson-2.3.jar" />
 
