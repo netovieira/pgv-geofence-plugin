@@ -45,7 +45,7 @@
 
         <framework src="com.google.android.gms:play-services-location:17.+" />
 <!--        <framework src="com.google.android.gms:play-services-location:+" />-->
-        <lib-file src="src/android/libs/gson-2.3.jar" />
+        <lib-file src="src/android/libs/gson-2.8.6.jar" />
 
         <config-file target="config.xml" parent="/*">
             <feature name="GeofencePlugin">
